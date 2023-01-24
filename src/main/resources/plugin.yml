@@ -1,0 +1,7 @@
+main: com.teunjojo.AutoRestart
+name: AutoRestart
+version: 1.0
+description: Spigot plugin that automatically restarts your server.
+api-version: 1.19
+author: teunjojo
+website: www.teunjojo.com
