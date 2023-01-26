@@ -1,2 +1,2 @@
-# The hour when the server should restart (24 hour format)
-hour: 3
+# The hour and minute when the server should restart (24 hour format)
+restartTime: "3:00"
