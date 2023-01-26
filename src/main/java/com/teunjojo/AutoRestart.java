@@ -1,12 +1,12 @@
 package com.teunjojo;
 
-import java.util.Calendar;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AutoRestart extends JavaPlugin {
@@ -14,77 +14,57 @@ public final class AutoRestart extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        serverStartMillis = System.currentTimeMillis();
         this.saveDefaultConfig();
         this.getConfig();
         FileConfiguration config = this.getConfig();
         saveConfig();
 
-        int restartHour = (config.getInt("hour"));
-        Plugin plugin = this;
+        String restartTime = (config.getString("restartTime"));
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                long upTimeMillis = System.currentTimeMillis() - serverStartMillis;
-                if (upTimeMillis > 3600000) {
-                    Calendar cal = Calendar.getInstance();
-                    if (cal.get(Calendar.HOUR_OF_DAY) == restartHour)
-                        startCountdown();
-                }
-            }
-        }, 0L, 1200L);
+        String[] timef = restartTime.split(":");
+        int hour = Integer.parseInt(timef[0]);
+        int minute = Integer.parseInt(timef[1]);
+
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime nextRun = now.withHour(hour).withMinute(minute-5).withSecond(0);
+        if(now.compareTo(nextRun) > 0)
+            nextRun = nextRun.plusDays(1);
+        
+        Duration duration = Duration.between(now, nextRun);
+        long initialDelay = duration.getSeconds();
+        WarnReboot("Restarting in 5 minutes", (int)initialDelay, false);
+        WarnReboot("Restarting in 3 minutes", (int)initialDelay + 120, false);
+        WarnReboot("Restarting in 2 minutes", (int)initialDelay + 180, false);
+        WarnReboot("Restarting in 1 minute", (int)initialDelay + 240, false);
+        WarnReboot("Restarting in 3 seconds", (int)initialDelay + 297, false);
+        WarnReboot("Restarting in 2 seconds", (int)initialDelay + 298, false);
+        WarnReboot("Restarting in 1 second", (int)initialDelay + 299, false);
+        WarnReboot("Restarting now", (int)initialDelay + 300, true);
     }
 
     @Override
     public void onDisable() {
     }
 
-    public void startCountdown() {
-        Bukkit.broadcastMessage("Restarting in 5 minutes");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            Bukkit.broadcastMessage("Restarting in 3 minutes");
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                Bukkit.broadcastMessage("Restarting in 2 minutes");
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                    Bukkit.broadcastMessage("Restarting in 1 minute");
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                        Bukkit.broadcastMessage("Restarting in 3");
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100, 0);
-                            player.sendTitle("Restarting in 3", "", 0, 1, 0);
-                        }
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                            Bukkit.broadcastMessage("Restarting in 2");
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100,
-                                        0);
-                                player.sendTitle("Restarting in 2", "", 0, 1, 0);
-                            }
-                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                                Bukkit.broadcastMessage("Restarting in 1");
-                                for (Player player : Bukkit.getOnlinePlayers()) {
-                                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,
-                                            100, 0);
-                                    player.sendTitle("Restarting in 1", "", 0, 1, 0);
-                                }
-                                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                                    Bukkit.broadcastMessage("Restarting now");
-                                    for (Player player : Bukkit.getOnlinePlayers()) {
-                                        player.playSound(player.getLocation(),
-                                                Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100, 0.2F);
-                                        player.sendTitle("Restarting now", "", 0, 1, 0);
-                                    }
-                                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-                                        Bukkit.spigot().restart();
-                                    }, 20L);
-                                }, 20L);
-                            }, 20L);
-                        }, 20L);
-                    }, 1160L);
-                }, 1200);
-            }, 1200L);
-        }, 2400L);
+    public void WarnReboot(String message, int seconds, Boolean reboot) {
+        Timer timer;
+        timer = new Timer();
+        timer.schedule(new WarnTask(message, reboot), seconds * 1000);
     }
 
+    class WarnTask extends TimerTask {
+        private final String message;
+        private final Boolean reboot;
+
+        WarnTask(String message, Boolean reboot) {
+            this.message = message;
+            this.reboot = reboot;
+        }
+
+        public void run() {
+            Bukkit.broadcastMessage(message);
+            if (reboot)
+                Bukkit.spigot().restart();
+        }
+    }
 }
