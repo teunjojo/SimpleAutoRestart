@@ -26,21 +26,20 @@ public final class AutoRestart extends JavaPlugin {
         int minute = Integer.parseInt(timef[1]);
 
         ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime nextRun = now.withHour(hour).withMinute(minute).withSecond(0);
-        nextRun.minusMinutes(5);
-        if (now.compareTo(nextRun) > 0)
-            nextRun = nextRun.plusDays(1);
+        ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute).withSecond(0);
+        if (now.compareTo(nextRestart) > 0)
+        nextRestart = nextRestart.plusDays(1);
 
-        Duration duration = Duration.between(now, nextRun);
+        Duration duration = Duration.between(now, nextRestart);
         long initialDelay = duration.getSeconds();
-        WarnReboot("Restarting in 5 minutes", (int) initialDelay, false);
-        WarnReboot("Restarting in 3 minutes", (int) initialDelay + 120, false);
-        WarnReboot("Restarting in 2 minutes", (int) initialDelay + 180, false);
-        WarnReboot("Restarting in 1 minute", (int) initialDelay + 240, false);
-        WarnReboot("Restarting in 3 seconds", (int) initialDelay + 297, false);
-        WarnReboot("Restarting in 2 seconds", (int) initialDelay + 298, false);
-        WarnReboot("Restarting in 1 second", (int) initialDelay + 299, false);
-        WarnReboot("Restarting now", (int) initialDelay + 300, true);
+        WarnReboot("Restarting in 5 minutes", (int) initialDelay - 5*60, false);
+        WarnReboot("Restarting in 3 minutes", (int) initialDelay - 3*60, false);
+        WarnReboot("Restarting in 2 minutes", (int) initialDelay - 2*60, false);
+        WarnReboot("Restarting in 1 minute", (int) initialDelay - 1*60, false);
+        WarnReboot("Restarting in 3 seconds", (int) initialDelay - 3, false);
+        WarnReboot("Restarting in 2 seconds", (int) initialDelay - 2, false);
+        WarnReboot("Restarting in 1 second", (int) initialDelay - 1, false);
+        WarnReboot("Restarting now", (int) initialDelay, true);
     }
 
     @Override
