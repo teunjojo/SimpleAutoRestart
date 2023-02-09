@@ -9,6 +9,12 @@ So I decided to create my own.
 - Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 
+### What is looks like in chat:
+![Chat](https://i.imgur.com/ug6L1lk.png)
+
+### What is looks like in console:
+![Console](https://i.imgur.com/Kshy5U5.png)
+
 ## Installation
 1. Download `AutoRestart-x.x.x-jar` from the releases page.
 2. Place the JAR file in the plugins folder of your server.
