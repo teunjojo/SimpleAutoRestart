@@ -1,11 +1,12 @@
 # AutoRestart
-I created this plugin as a solution to my own problem where I could not find a reliable and simple plugin to restart my Spigot server. After trying various options and finding them to be either too complex or tick based so they where not accurate when TPS was below 20 and therefore not compatible with Hibernate plugins.
-So I decided to build my own.
+I tried many of the autorestart plugins out there, but all I could find were either too complex or tick based. This means they where not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
+
+So I decided to create my own.
 
 ## Features
 - Schedule automatic restarts at a specific time.
 - Warning messages broadcasted to players before restart.
-- Time based and not tick based for more accurate.
+- Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 
 ## Installation
