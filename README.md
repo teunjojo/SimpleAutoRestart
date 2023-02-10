@@ -22,4 +22,4 @@ So I decided to create my own.
 4. Configure the plugin by editing the config.yml file in the plugins/AutoRestart folder.
 
 ## Support
-If you have any issues or questions. Feel free to create either open issue ticket or mail me on mail@teunjojo.com.
+If you have any issues or questions. Feel free to either open a issue ticket or mail me on mail@teunjojo.com.
