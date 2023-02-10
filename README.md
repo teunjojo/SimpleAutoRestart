@@ -1,4 +1,7 @@
 # SimpleAutoRestart
+
+[![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg)](https://github.com/teunjojo/SimpleAutoRestart)
+
 I tried many of the autorestart plugins out there, but all I could find were either too complex or tick based. This means they where not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
 
 So I decided to create my own.
