@@ -27,4 +27,5 @@ So I decided to create my own.
 4. Configure the plugin by editing the config.yml file in the plugins/AutoRestart folder.
 
 ## Support
-If you have any issues or questions. Feel free to either open a issue ticket or mail me on mail@teunjojo.com.
+If you have any issues or questions. Feel free to [create an issue ticket](https://github.com/teunjojo/SimpleAutoRestart/issues/new). 
+
