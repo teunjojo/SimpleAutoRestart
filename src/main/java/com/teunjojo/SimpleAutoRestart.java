@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 
 public final class SimpleAutoRestart extends JavaPlugin {
     public static long serverStartMillis;
@@ -24,6 +25,9 @@ public final class SimpleAutoRestart extends JavaPlugin {
         String[] timef = restartTime.split(":");
         int hour = Integer.parseInt(timef[0]);
         int minute = Integer.parseInt(timef[1]);
+
+        int pluginId = 17760;
+        Metrics metrics = new Metrics(this, pluginId);
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute).withSecond(0);
