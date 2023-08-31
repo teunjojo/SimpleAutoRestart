@@ -9,6 +9,8 @@ I tried many of the autorestart plugins out there, but all I could find were eit
 
 So I decided to create my own.
 
+![bstats](https://bstats.org/signatures/bukkit/simpleautorestart.svg)
+
 ## Features
 - Schedule automatic restarts at a specific time.
 - Warning messages broadcasted to players before restart.
