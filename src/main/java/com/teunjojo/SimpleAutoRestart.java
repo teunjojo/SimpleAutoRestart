@@ -22,7 +22,6 @@ public final class SimpleAutoRestart extends JavaPlugin {
         this.saveDefaultConfig();
         this.getConfig();
         FileConfiguration config = this.getConfig();
-        saveConfig();
 
         int pluginId = 17760;
         // bStats metrics
