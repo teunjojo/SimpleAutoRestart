@@ -1,4 +1,4 @@
 # The hour and minute when the server should restart (24 hour format)
 restartTime:
-- 00:00
-# Add multiple times by adding a new line like: - 12:00
+- '00:00'
+# Add multiple times by adding a new line like: - '12:00'
