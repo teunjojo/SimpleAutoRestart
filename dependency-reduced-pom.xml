@@ -4,7 +4,7 @@
   <groupId>com.teunjojo</groupId>
   <artifactId>SimpleAutoRestart</artifactId>
   <name>SimpleAutoRestart</name>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
   <description>Really simple Spigot plugin that automatically restarts your server.</description>
   <url>www.teunjojo.com</url>
   <build>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.19.3-R0.1-SNAPSHOT</version>
+      <version>1.20.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -62,6 +62,10 @@
         <exclusion>
           <artifactId>gson</artifactId>
           <groupId>com.google.code.gson</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>joml</artifactId>
+          <groupId>org.joml</groupId>
         </exclusion>
         <exclusion>
           <artifactId>bungeecord-chat</artifactId>
