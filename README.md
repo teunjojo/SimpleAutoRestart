@@ -14,6 +14,7 @@ So I decided to create my own.
 ## Features
 - Schedule automatic restarts at a specific time.
 - Warning messages broadcasted to players before restart.
+- Add multiple restart times.
 - Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 
