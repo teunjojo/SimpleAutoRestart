@@ -30,6 +30,24 @@ So I decided to create my own.
 3. Start or restart the server.
 4. Configure the plugin by editing the config.yml file in the plugins/AutoRestart folder.
 
+## Configuration
+```
+# The hour and minute when the server should restart (24 hour format)
+restartTime:
+- '00:00'
+# Add multiple times by adding a new line like: - '12:00'
+
+messages:
+  5min: "Restarting in 5 minutes"
+  3min: "Restarting in 3 minutes"
+  2min: "Restarting in 2 minutes"
+  1min: "Restarting in 1 minute"
+  3sec: "Restarting in 3 seconds"
+  2sec: "Restarting in 2 seconds"
+  1sec: "Restarting in 1 second"
+  now: "Restarting now"
+```
+
 ## Support
 If you have any issues or questions. Feel free to [create an issue ticket](https://github.com/teunjojo/SimpleAutoRestart/issues/new). 
 
