@@ -37,15 +37,16 @@ restartTime:
 - '00:00'
 # Add multiple times by adding a new line like: - '12:00'
 
+# Configure message and the corresponding pre-warning time in seconds
 messages:
-  5min: "Restarting in 5 minutes"
-  3min: "Restarting in 3 minutes"
-  2min: "Restarting in 2 minutes"
-  1min: "Restarting in 1 minute"
-  3sec: "Restarting in 3 seconds"
-  2sec: "Restarting in 2 seconds"
-  1sec: "Restarting in 1 second"
-  now: "Restarting now"
+  '0': Restarting now
+  '1': Restarting in 1 second
+  '2': Restarting in 2 seconds
+  '3': Restarting in 3 seconds
+  '60': Restarting in 1 minute
+  '120': Restarting in 2 minutes
+  '180': Restarting in 3 minutes
+  '300': Restarting in 5 minutes
 ```
 
 ## Support
