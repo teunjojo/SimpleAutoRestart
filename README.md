@@ -39,14 +39,22 @@ restartTime:
 
 # Configure message and the corresponding pre-warning time in seconds
 messages:
-  '0': Restarting now
-  '1': Restarting in 1 second
-  '2': Restarting in 2 seconds
-  '3': Restarting in 3 seconds
-  '60': Restarting in 1 minute
-  '120': Restarting in 2 minutes
-  '180': Restarting in 3 minutes
-  '300': Restarting in 5 minutes
+  '0': 'Restarting now'
+  '1': 'Restarting in 1 second'
+  '2': 'Restarting in 2 seconds'
+  '3': 'Restarting in 3 seconds'
+  '60': 'Restarting in 1 minute'
+  '120': 'Restarting in 2 minutes'
+  '180': 'Restarting in 3 minutes'
+  '300': 'Restarting in 5 minutes'
+
+titles: 
+  '300' : '§l§4Warning'
+  '3' : '§l§4Warning'
+
+subtitles:
+  '300' : "§6Restarting in 5 minutes"
+  '3' : "§6Restarting now..."
 ```
 
 ## Support
