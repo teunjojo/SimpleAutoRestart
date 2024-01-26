@@ -72,9 +72,26 @@ public final class SimpleAutoRestart extends JavaPlugin {
             reloadConfig();
         }
 
+        // Load the messages from the config
         Map<Long, String> messages = new HashMap<>();
-        for (String key : config.getConfigurationSection("messages").getKeys(false)) {
-            messages.put(Long.parseLong(key), config.getString("messages." + key));
+        if (config.getConfigurationSection("messages") != null) {
+            for (String key : config.getConfigurationSection("messages").getKeys(false)) {
+                messages.put(Long.parseLong(key), config.getString("messages." + key));
+            }
+        }
+        // Load the titles from the config
+        Map<Long, String> titles = new HashMap<>();
+        if (config.getConfigurationSection("titles") != null) {
+            for (String key : config.getConfigurationSection("titles").getKeys(false)) {
+                titles.put(Long.parseLong(key), config.getString("titles." + key));
+            }
+        }
+        // Load the subtitles from the config
+        Map<Long, String> subtitles = new HashMap<>();
+        if (config.getConfigurationSection("subtitles") != null) {
+            for (String key : config.getConfigurationSection("subtitles").getKeys(false)) {
+                subtitles.put(Long.parseLong(key), config.getString("subtitles." + key));
+            }
         }
 
         for (String restartTime : restartTimes) {
@@ -99,6 +116,34 @@ public final class SimpleAutoRestart extends JavaPlugin {
                     @Override
                     public void run() {
                         Bukkit.broadcastMessage(messages.get(delay));
+                    }
+                }, (initialDelayInSeconds - delay) * 1000);
+            }
+
+            // Schedule the restart title
+            for (Long delay : titles.keySet()) {
+                if (delay > initialDelayInSeconds)
+                    continue;
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Bukkit.getOnlinePlayers().forEach(player -> {
+                            player.sendTitle(titles.get(delay), null, 10, 70, 20);
+                        });
+                    }
+                }, (initialDelayInSeconds - delay) * 1000);
+            }
+
+            // Schedule the restart subtitle
+            for (Long delay : subtitles.keySet()) {
+                if (delay > initialDelayInSeconds)
+                    continue;
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Bukkit.getOnlinePlayers().forEach(player -> {
+                            player.sendTitle(null, subtitles.get(delay), 10, 70, 20);
+                        });
                     }
                 }, (initialDelayInSeconds - delay) * 1000);
             }
