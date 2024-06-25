@@ -21,6 +21,8 @@ public final class SimpleAutoRestart extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        SimpleAutoRestart plugin = this;
+        
         this.saveDefaultConfig();
         this.getConfig();
         FileConfiguration config = this.getConfig();
@@ -94,6 +96,18 @@ public final class SimpleAutoRestart extends JavaPlugin {
             }
         }
 
+        // Load the commands from the config
+        List<String> commands = config.getStringList("commands");
+        if (commands.size()== 0) {
+            // If no stop commands are provided, add a default one
+            config.set("commands", new ArrayList<String>() {{
+                add("restart");
+            }});
+            saveConfig();
+            reloadConfig();
+            commands = config.getStringList("commands");
+        }
+
         for (String restartTime : restartTimes) {
             String[] timef = restartTime.split(":");
             int hour = Integer.parseInt(timef[0]);
@@ -149,10 +163,18 @@ public final class SimpleAutoRestart extends JavaPlugin {
             }
 
             // Schedule the restart itself
+            final List<String> commandsFinal = commands;
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Bukkit.spigot().restart();
+                    Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            commandsFinal.forEach(command -> {
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                            });
+                        }
+                    });
                 }
             }, initialDelayInSeconds * 1000);
 

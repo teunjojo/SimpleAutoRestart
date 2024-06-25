@@ -21,3 +21,7 @@ titles:
 subtitles:
   '300' : "§6Restarting in 5 minutes"
   '3' : "§6Restarting now..."
+
+# The commands that will be executed at restart time
+commands:
+- 'restart'
