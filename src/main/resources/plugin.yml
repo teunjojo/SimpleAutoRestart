@@ -5,3 +5,9 @@ description: ${project.description}
 api-version: 1.13
 author: teunjojo
 website: ${project.url}
+commands:
+  simpleautorestart:
+    description: Main SimpleAutoRestart command
+    aliases: [sar, autorestart]
+    usage: "Usage: /<command> [cancel | resume | status | set <hours>:<minutes>]"
+    default: op

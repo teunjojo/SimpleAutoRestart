@@ -2,12 +2,7 @@ package com.teunjojo;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,37 +11,62 @@ import org.bstats.bukkit.Metrics;
 
 public final class SimpleAutoRestart extends JavaPlugin {
 
+    SimpleAutoRestart plugin = this;
+
+    private final RestartScheduler restartScheduler = new RestartScheduler(plugin);
+
+    private List<String> restartTimes = new ArrayList<>();
+    private Map<Long, String> messages = new HashMap<>();
+    private Map<Long, String> titles = new HashMap<>();
+    private Map<Long, String> subtitles = new HashMap<>();
+    private List<String> commands = new ArrayList<>();
+
     /**
-     * Function executed when the plugin is enabling..
+     * Function executed when the plugin is enabling.
      */
     @Override
     public void onEnable() {
-        SimpleAutoRestart plugin = this;
-        
-        this.saveDefaultConfig();
-        this.getConfig();
-        FileConfiguration config = this.getConfig();
 
-        int pluginId = 17760;
         // bStats metrics
+        int pluginId = 17760;
         new Metrics(this, pluginId);
 
-        List<String> restartTimes;
+        // Register SimpleAutoRestart commands
+        this.getCommand("autorestart").setExecutor(new CommandMain(plugin));
+        this.getCommand("simpleautorestart").setExecutor(new CommandMain(plugin));
+        this.getCommand("sar").setExecutor(new CommandMain(plugin));
+
+        // Load the configuration
+        if (loadConfig() == null) {
+            getLogger().warning("Failed to load the configuration file.");
+            return;
+        }
+
+        // Schedule the restarts
+        for (String restartTime : this.restartTimes) {
+            if (!restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands)) {
+                getLogger().severe("Failed to schedule the restart for: " + restartTime);
+            }
+        }
+    }
+
+    public FileConfiguration loadConfig () {
+        this.saveDefaultConfig();
+        FileConfiguration config = this.getConfig();
         Object restartTimeObject = config.get("restartTime");
 
         // Check if the restart time is a string or a list
         if (restartTimeObject instanceof String) {
-            // Handle a single string case
-            restartTimes = new ArrayList<>();
-            restartTimes.add((String) restartTimeObject);
+            // Add the single restart time to the list
+            this.restartTimes.add((String) restartTimeObject);
         } else if (restartTimeObject instanceof List) {
-            // Handle a list case
-            restartTimes = (List<String>) restartTimeObject;
+            // Save the list of restart times
+            this.restartTimes = (List<String>) restartTimeObject;
         } else {
-            // Handle an unexpected type or null
+            // If unknown format, log a warning and set the restart times to an empty list
             getLogger().warning("Invalid format for 'restartTime' in the configuration file.");
-            // Provide a default value or handle the situation accordingly
-            restartTimes = new ArrayList<>();
+            this.restartTimes = new ArrayList<>();
+            return null;
         }
 
         // Check if the messages are in the old format
@@ -75,111 +95,59 @@ public final class SimpleAutoRestart extends JavaPlugin {
         }
 
         // Load the messages from the config
-        Map<Long, String> messages = new HashMap<>();
         if (config.getConfigurationSection("messages") != null) {
             for (String key : config.getConfigurationSection("messages").getKeys(false)) {
-                messages.put(Long.parseLong(key), config.getString("messages." + key));
+                this.messages.put(Long.parseLong(key), config.getString("messages." + key));
             }
         }
         // Load the titles from the config
-        Map<Long, String> titles = new HashMap<>();
         if (config.getConfigurationSection("titles") != null) {
             for (String key : config.getConfigurationSection("titles").getKeys(false)) {
-                titles.put(Long.parseLong(key), config.getString("titles." + key));
+                this.titles.put(Long.parseLong(key), config.getString("titles." + key));
             }
         }
         // Load the subtitles from the config
-        Map<Long, String> subtitles = new HashMap<>();
         if (config.getConfigurationSection("subtitles") != null) {
             for (String key : config.getConfigurationSection("subtitles").getKeys(false)) {
-                subtitles.put(Long.parseLong(key), config.getString("subtitles." + key));
+                this.subtitles.put(Long.parseLong(key), config.getString("subtitles." + key));
             }
         }
 
         // Load the commands from the config
-        List<String> commands = config.getStringList("commands");
-        if (commands.size()== 0) {
+        this.commands = config.getStringList("commands");
+        if (this.commands.isEmpty()) {
             // If no stop commands are provided, add a default one
             config.set("commands", new ArrayList<String>() {{
                 add("restart");
             }});
             saveConfig();
             reloadConfig();
-            commands = config.getStringList("commands");
+            this.commands = config.getStringList("commands");
         }
-
-        for (String restartTime : restartTimes) {
-            String[] timef = restartTime.split(":");
-            int hour = Integer.parseInt(timef[0]);
-            int minute = Integer.parseInt(timef[1]);
-
-            ZonedDateTime now = ZonedDateTime.now();
-            ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute).withSecond(0);
-            if (now.compareTo(nextRestart) > 0)
-                nextRestart = nextRestart.plusDays(1);
-
-            Duration duration = Duration.between(now, nextRestart);
-            long initialDelayInSeconds = duration.getSeconds();
-
-            // Schedule the restart messages
-            Timer timer = new Timer();
-            for (Long delay : messages.keySet()) {
-                if (delay > initialDelayInSeconds)
-                    continue;
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Bukkit.broadcastMessage(messages.get(delay));
-                    }
-                }, (initialDelayInSeconds - delay) * 1000);
-            }
-
-            // Schedule the restart title
-            for (Long delay : titles.keySet()) {
-                if (delay > initialDelayInSeconds)
-                    continue;
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Bukkit.getOnlinePlayers().forEach(player -> {
-                            player.sendTitle(titles.get(delay), null, 10, 70, 20);
-                        });
-                    }
-                }, (initialDelayInSeconds - delay) * 1000);
-            }
-
-            // Schedule the restart subtitle
-            for (Long delay : subtitles.keySet()) {
-                if (delay > initialDelayInSeconds)
-                    continue;
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Bukkit.getOnlinePlayers().forEach(player -> {
-                            player.sendTitle(null, subtitles.get(delay), 10, 70, 20);
-                        });
-                    }
-                }, (initialDelayInSeconds - delay) * 1000);
-            }
-
-            // Schedule the restart itself
-            final List<String> commandsFinal = commands;
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Bukkit.getScheduler().runTask(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            commandsFinal.forEach(command -> {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                            });
-                        }
-                    });
-                }
-            }, initialDelayInSeconds * 1000);
-
-            getLogger().info("Reboot set for: " + restartTime);
-        }
+        return config;
     }
 
+    public RestartScheduler getRestartScheduler() {
+        return restartScheduler;
+    }
+
+    public List<String> getRestartTimes() {
+        return restartTimes;
+    }
+
+    public Map<Long, String> getMessages() {
+        return messages;
+    }
+
+    public Map<Long, String> getTitles() {
+        return titles;
+    }
+
+    public Map<Long, String> getSubtitles() {
+        return subtitles;
+    }
+
+    public List<String> getCommands() {
+        return commands;
+    }
 }
