@@ -5,16 +5,16 @@
 [![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg)](https://modrinth.com/plugin/simpleautorestart)
 [![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/simpleautorestart)
 
-I tried many of the autorestart plugins out there, but all I could find were either too complex or tick based. This means they where not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
+I tried many of the autorestart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
 
 So I decided to create my own.
 
 [![bstats](https://bstats.org/signatures/bukkit/simpleautorestart.svg)](https://www.bstats.org/plugin/bukkit/SimpleAutoRestart/17760)
 
 ## Features
-- Schedule automatic restarts at a specific time.
+- Schedule automatic restarts at a specific times.
 - Warning messages broadcasted to players before restart.
-- Add multiple restart times.
+- Schedule multiple restarts.
 - Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 
@@ -56,6 +56,13 @@ subtitles:
   '300' : "§6Restarting in 5 minutes"
   '3' : "§6Restarting now..."
 ```
+
+## Commands
+- `/simpleautorestart` or `/sar` or `/autorestart` - Show the help menu.
+- `/simpleautorestart cancel` - Cancel the next restart.
+- `/simpleautorestart resume` - Resume the next restart.
+- `/simpleautorestart status` - Show the status of the next restart.
+- `/simpleautorestart set <hour> <minute>` - Schedule a restart at a specific time.
 
 ## Support
 If you have any issues or questions. Feel free to [create an issue ticket](https://github.com/teunjojo/SimpleAutoRestart/issues/new). 
