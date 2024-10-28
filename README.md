@@ -5,7 +5,7 @@
 [![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg)](https://modrinth.com/plugin/simpleautorestart)
 [![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/simpleautorestart)
 
-I tried many of the autorestart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
+I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
 
 So I decided to create my own.
 
@@ -25,10 +25,10 @@ So I decided to create my own.
 ![Console](https://i.imgur.com/Kshy5U5.png)
 
 ## Installation
-1. Download `AutoRestart-x.x.x-jar` from the releases page.
+1. Download `SimpleAutoRestart-x.x.x-jar` from the releases page.
 2. Place the JAR file in the plugins folder of your server.
 3. Start or restart the server.
-4. Configure the plugin by editing the config.yml file in the plugins/AutoRestart folder.
+4. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
 ## Configuration
 ```
