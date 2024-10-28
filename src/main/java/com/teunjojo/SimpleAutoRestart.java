@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 
+import static com.sun.imageio.plugins.jpeg.JPEG.version;
+
 public final class SimpleAutoRestart extends JavaPlugin {
 
     SimpleAutoRestart plugin = this;
@@ -30,6 +32,14 @@ public final class SimpleAutoRestart extends JavaPlugin {
         // bStats metrics
         int pluginId = 17760;
         new Metrics(this, pluginId);
+
+        // Check for updates
+        new UpdateChecker(this).getVersion((version) -> {
+            version = version.replaceFirst("v", "");
+            if (!this.getDescription().getVersion().equals(version)) {
+                getLogger().warning("A new version of SimpleAutoRestart is available: v" + version + " (Current version: v" + this.getDescription().getVersion() + ")");
+            }
+        });
 
         // Register SimpleAutoRestart commands
         this.getCommand("autorestart").setExecutor(new CommandMain(plugin));
