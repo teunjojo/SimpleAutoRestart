@@ -24,6 +24,11 @@ public class CommandMain implements TabExecutor {
             return false;
         }
 
+        if (!sender.hasPermission("simpleautorestart")) {
+            sender.sendMessage("You don't have permission to use this command");
+            return true;
+        }
+
         switch (args[0]){
             case "cancel":
                 return commandCancelRestart(sender);
