@@ -10,4 +10,5 @@ commands:
     description: Main SimpleAutoRestart command
     aliases: [sar, autorestart]
     usage: "Usage: /<command> [cancel | resume | status | set <hours>:<minutes>]"
+    permission: simpleautorestart.use
     default: op
