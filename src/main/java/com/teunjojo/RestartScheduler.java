@@ -1,6 +1,5 @@
 package com.teunjojo;
 
-import jdk.tools.jlink.plugin.Plugin;
 import org.bukkit.Bukkit;
 
 import java.time.Duration;
