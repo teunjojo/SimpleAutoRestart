@@ -2,7 +2,7 @@ main: com.teunjojo.SimpleAutoRestart
 name: ${project.name}
 version: ${project.version}
 description: ${project.description}
-api-version: 1.8
+api-version: 1.13
 author: teunjojo
 website: ${project.url}
 commands:
