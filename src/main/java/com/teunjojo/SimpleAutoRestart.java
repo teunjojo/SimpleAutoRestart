@@ -1,15 +1,10 @@
 package com.teunjojo;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.*;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
-
-import static com.sun.imageio.plugins.jpeg.JPEG.version;
 
 public final class SimpleAutoRestart extends JavaPlugin {
 

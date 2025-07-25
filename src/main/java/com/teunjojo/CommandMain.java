@@ -4,7 +4,6 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CommandMain implements TabExecutor {
@@ -43,8 +42,6 @@ public class CommandMain implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
             if(sender instanceof Player){
-                Player player = (Player) sender;
-
                 ArrayList<String> completions = new ArrayList<>();
 
                 switch (args.length){
