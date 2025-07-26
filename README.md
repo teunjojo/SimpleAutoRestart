@@ -23,10 +23,10 @@ So I decided to create my own.
 - Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 
-## What is looks like in game (although you can customize this):
+## What it looks like in game (although you can customize this):
 ![Chat](https://i.imgur.com/ZjQq3sq.png)
 
-## What is looks like in the server console (although you can customize this):
+## What it looks like in the server console (although you can customize this):
 ![Console](https://i.imgur.com/Kshy5U5.png)
 
 ## Installation
