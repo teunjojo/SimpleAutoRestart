@@ -1,6 +1,5 @@
 package com.teunjojo;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class UpdateChecker {
     }
 
     public void getVersion(final Consumer<String> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        new Thread(() -> {
             // Get the latest release from the GitHub API
             try (InputStream is = new URL("https://api.github.com/repos/teunjojo/SimpleAutoRestart/releases/latest").openStream();
                  Scanner scanner = new Scanner(is)) {
@@ -37,6 +36,6 @@ public class UpdateChecker {
             } catch (IOException exception) {
                 this.plugin.getLogger().info("Cannot look for updates: " + exception.getMessage());
             }
-        });
+        }).start();
     }
 }
