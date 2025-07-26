@@ -55,7 +55,7 @@ public final class SimpleAutoRestart extends JavaPlugin {
         }
     }
 
-    public FileConfiguration loadConfig () {
+    public FileConfiguration loadConfig() {
         this.saveDefaultConfig();
         FileConfiguration config = this.getConfig();
         Object restartTimeObject = config.get("restartTime");
@@ -122,9 +122,11 @@ public final class SimpleAutoRestart extends JavaPlugin {
         this.commands = config.getStringList("commands");
         if (this.commands.isEmpty()) {
             // If no stop commands are provided, add a default one
-            config.set("commands", new ArrayList<String>() {{
+            config.set("commands", new ArrayList<String>() {
+                {
                 add("restart");
-            }});
+                }
+            });
             saveConfig();
             reloadConfig();
             this.commands = config.getStringList("commands");
