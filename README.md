@@ -1,11 +1,14 @@
 # SimpleAutoRestart
 
+[![GitHub Release](https://img.shields.io/github/v/release/teunjojo/SimpleAutoRestart?style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/releases)
+
 [![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg)](https://github.com/teunjojo/SimpleAutoRestart)
 [![spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/spigot_vector.svg)](https://www.spigotmc.org/resources/simpleautorestart.107932/)
 [![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg)](https://modrinth.com/plugin/simpleautorestart)
 [![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/simpleautorestart)
 
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact.svg)](https://www.spigotmc.org/)
+[![folia](https://badges.penpow.dev/badges/supported/folia/compact.svg)](https://www.spigotmc.org/)
 
 
 I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
