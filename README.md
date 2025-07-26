@@ -10,7 +10,6 @@
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact.svg)](https://bukkit.org/)
 [![folia](https://badges.penpow.dev/badges/supported/folia/compact.svg)](https://papermc.io/software/folia)
 
-
 I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
 
 So I decided to create my own.
@@ -31,12 +30,36 @@ So I decided to create my own.
 ![Console](https://i.imgur.com/Kshy5U5.png)
 
 ## Installation
+
 1. Download `SimpleAutoRestart-x.x.x-jar` from the releases page.
 2. Place the JAR file in the plugins folder of your server.
 3. Start or restart the server.
 4. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
+### Extra steps for Folia
+
+1. Open the config file `plugins/SimpleAutoRestart/config.yml`
+2. Change the command `restart` to `stop`
+3. Wrap your server start script in a wrapper, like this:
+
+```sh
+#!/bin/sh
+while true
+do
+  sh start.sh
+  echo "If you want to completely stop the server, press Ctrl+C"
+  echo "Rebooting in:"
+  for i in 5 4 3 2 1
+  do
+    echo "$i..."
+    sleep 1
+  done
+  echo "Rebooting now!"
+done
+```
+
 ## Configuration
+
 ```
 # The hour and minute when the server should restart (24 hour format)
 restartTime:
@@ -61,15 +84,29 @@ titles:
 subtitles:
   '300' : "§6Restarting in 5 minutes"
   '3' : "§6Restarting now..."
+
+# The commands that will be executed at restart time
+commands:
+- 'restart'
 ```
 
 ## Commands
+
 - `/simpleautorestart` or `/sar` or `/autorestart` - Show the help menu.
 - `/simpleautorestart cancel` - Cancel the next restart.
 - `/simpleautorestart resume` - Resume the next restart.
 - `/simpleautorestart status` - Show the status of the next restart.
 - `/simpleautorestart set <hour> <minute>` - Schedule a restart at a specific time.
 
+## Troubleshooting
+
+### It counts down, but doesn't restart
+
+For spigot/paper. Make sure you have configured `restart-script` in [`spigot.yml`](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script)
+
+For Folia. Make sure you followed the [extra Folia installation steps](#extra-steps-for-folia)
+
 ## Support
+
 If you have any issues or questions. Feel free to [create an issue ticket](https://github.com/teunjojo/SimpleAutoRestart/issues/new). 
 
