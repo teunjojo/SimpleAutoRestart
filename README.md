@@ -31,10 +31,11 @@ So I decided to create my own.
 
 ## Installation
 
-1. Download `SimpleAutoRestart-x.x.x-jar` from the releases page.
-2. Place the JAR file in the plugins folder of your server.
-3. Start or restart the server.
-4. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
+1. Set the startup script in [spigot.yml](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script)
+2. Download `SimpleAutoRestart-x.x.x-jar` from the releases page.
+3. Place the JAR file in the plugins folder of your server.
+4. Start or restart the server.
+5. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
 ### Extra steps for Folia
 
