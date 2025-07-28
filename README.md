@@ -38,22 +38,6 @@ So I decided to create my own.
 4. Start or restart the server.
 5. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
-```sh
-#!/bin/sh
-while true
-do
-  sh start.sh
-  echo "If you want to completely stop the server, press Ctrl+C"
-  echo "Rebooting in:"
-  for i in 5 4 3 2 1
-  do
-    echo "$i..."
-    sleep 1
-  done
-  echo "Rebooting now!"
-done
-```
-
 ## Configuration
 
 ```yml
