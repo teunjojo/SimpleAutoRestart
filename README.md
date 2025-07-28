@@ -8,7 +8,7 @@
 [![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/simpleautorestart)
 
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact.svg)](https://bukkit.org/)
-[![folia](https://badges.penpow.dev/badges/supported/folia/compact.svg)](https://papermc.io/software/folia)
+[![folia](https://badges.penpow.dev/badges/unsupported/folia/compact.svg)](https://papermc.io/software/folia)
 
 I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
 
@@ -17,6 +17,7 @@ So I decided to create my own.
 [![bstats](https://bstats.org/signatures/bukkit/simpleautorestart.svg)](https://www.bstats.org/plugin/bukkit/SimpleAutoRestart/17760)
 
 ## Features
+
 - Schedule automatic restarts at a specific times.
 - Warning messages broadcasted to players before restart.
 - Schedule multiple restarts.
@@ -37,12 +38,6 @@ So I decided to create my own.
 4. Start or restart the server.
 5. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
-### Extra steps for Folia
-
-1. Open the config file `plugins/SimpleAutoRestart/config.yml`
-2. Change the command `restart` to `stop`
-3. Wrap your server start script in a wrapper, like this:
-
 ```sh
 #!/bin/sh
 while true
@@ -61,7 +56,7 @@ done
 
 ## Configuration
 
-```
+```yml
 # The hour and minute when the server should restart (24 hour format)
 restartTime:
 - '00:00'
@@ -103,11 +98,8 @@ commands:
 
 ### It counts down, but doesn't restart
 
-For spigot/paper. Make sure you have configured `restart-script` in [`spigot.yml`](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script)
-
-For Folia. Make sure you followed the [extra Folia installation steps](#extra-steps-for-folia)
+Make sure you have configured `restart-script` in [`spigot.yml`](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script)
 
 ## Support
 
 If you have any issues or questions. Feel free to [create an issue ticket](https://github.com/teunjojo/SimpleAutoRestart/issues/new). 
-
