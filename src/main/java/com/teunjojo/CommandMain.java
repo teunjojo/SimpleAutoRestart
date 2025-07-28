@@ -112,8 +112,8 @@ public class CommandMain implements TabExecutor {
             return false;
         }
 
-        sender.sendMessage("Auto restart is scheduled at " + hour + ":" + minute);
-        restartScheduler.scheduleRestart(hour + ":" + minute, plugin.getMessages(), plugin.getTitles(),
+        sender.sendMessage("Auto restart is scheduled at " + String.format("%02d", hour) + ":" + String.format("%02d", minute));
+        restartScheduler.scheduleRestart(String.format("%02d:%02d", hour, minute), plugin.getMessages(), plugin.getTitles(),
                 plugin.getSubtitles(), plugin.getCommands());
         restartScheduler.setRestartCanceled(false);
         return true;
