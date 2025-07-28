@@ -32,7 +32,8 @@ public final class SimpleAutoRestart extends JavaPlugin {
         new UpdateChecker(this).getVersion((version) -> {
             version = version.replaceFirst("v", "");
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning("A new version of SimpleAutoRestart is available: v" + version + " (Current version: v" + this.getDescription().getVersion() + ")");
+                getLogger().warning("A new version of SimpleAutoRestart is available: v" + version
+                        + " (Current version: v" + this.getDescription().getVersion() + ")");
             }
         });
 
@@ -124,7 +125,7 @@ public final class SimpleAutoRestart extends JavaPlugin {
             // If no stop commands are provided, add a default one
             config.set("commands", new ArrayList<String>() {
                 {
-                add("restart");
+                    add("restart");
                 }
             });
             saveConfig();

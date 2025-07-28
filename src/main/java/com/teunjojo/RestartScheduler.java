@@ -17,7 +17,8 @@ public class RestartScheduler {
         this.plugin = plugin;
     }
 
-    public boolean scheduleRestart(String _restartTime, Map<Long, String> _messages, Map<Long, String> _titles, Map<Long, String> _subtitles, List<String> _commands) {
+    public boolean scheduleRestart(String _restartTime, Map<Long, String> _messages, Map<Long, String> _titles,
+            Map<Long, String> _subtitles, List<String> _commands) {
 
         int hour = Integer.parseInt(_restartTime.split(":")[0]);
         int minute = Integer.parseInt(_restartTime.split(":")[1]);
@@ -78,15 +79,12 @@ public class RestartScheduler {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Bukkit.getScheduler().runTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!RestartScheduler.this.isRestartCanceled())
-                            _commands.forEach(command -> {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                            });
-                    }
-                });
+                if (!RestartScheduler.this.isRestartCanceled())
+                    _commands.forEach(command -> {
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                        });
+                    });
             }
         }, initialDelayInSeconds * 1000);
 

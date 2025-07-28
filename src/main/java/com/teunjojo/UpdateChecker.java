@@ -19,8 +19,9 @@ public class UpdateChecker {
     public void getVersion(final Consumer<String> consumer) {
         new Thread(() -> {
             // Get the latest release from the GitHub API
-            try (InputStream is = new URL("https://api.github.com/repos/teunjojo/SimpleAutoRestart/releases/latest").openStream();
-                 Scanner scanner = new Scanner(is)) {
+            try (InputStream is = new URL("https://api.github.com/repos/teunjojo/SimpleAutoRestart/releases/latest")
+                    .openStream();
+                    Scanner scanner = new Scanner(is)) {
                 // Get tag_name from the JSON response
                 if (scanner.hasNext()) {
 

@@ -23,7 +23,7 @@ public class CommandMain implements TabExecutor {
             return false;
         }
 
-        switch (args[0]){
+        switch (args[0]) {
             case "cancel":
                 return commandCancelRestart(sender);
             case "resume":
@@ -41,33 +41,33 @@ public class CommandMain implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-            if(sender instanceof Player){
-                ArrayList<String> completions = new ArrayList<>();
+        if (sender instanceof Player) {
+            ArrayList<String> completions = new ArrayList<>();
 
-                switch (args.length){
-                    case 1:
-                        completions.add("cancel");
-                        completions.add("resume");
-                        completions.add("status");
-                        completions.add("set");
-                        break;
-                    case 2:
-                        for (int i = 0; i < 24; i++) {
-                            completions.add(String.valueOf(i));
-                        }
-                        break;
-                    case 3:
-                        for (int i = 0; i < 60; i++) {
-                            completions.add(String.valueOf(i));
-                        }
-                        break;
-                    default:
-                        completions.add("");
-                        break;
-                }
-                return completions;
-
+            switch (args.length) {
+                case 1:
+                    completions.add("cancel");
+                    completions.add("resume");
+                    completions.add("status");
+                    completions.add("set");
+                    break;
+                case 2:
+                    for (int i = 0; i < 24; i++) {
+                        completions.add(String.valueOf(i));
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < 60; i++) {
+                        completions.add(String.valueOf(i));
+                    }
+                    break;
+                default:
+                    completions.add("");
+                    break;
             }
+            return completions;
+
+        }
         return null;
     }
 
@@ -113,7 +113,8 @@ public class CommandMain implements TabExecutor {
         }
 
         sender.sendMessage("Auto restart is scheduled at " + hour + ":" + minute);
-        restartScheduler.scheduleRestart(hour+":"+minute, plugin.getMessages(), plugin.getTitles(), plugin.getSubtitles(), plugin.getCommands());
+        restartScheduler.scheduleRestart(hour + ":" + minute, plugin.getMessages(), plugin.getTitles(),
+                plugin.getSubtitles(), plugin.getCommands());
         restartScheduler.setRestartCanceled(false);
         return true;
 
