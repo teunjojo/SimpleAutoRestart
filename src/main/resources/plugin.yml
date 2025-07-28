@@ -3,7 +3,7 @@ name: ${project.name}
 version: ${project.version}
 description: ${project.description}
 api-version: 1.13
-folia-supported: true
+folia-supported: false
 author: teunjojo
 website: ${project.url}
 commands:
