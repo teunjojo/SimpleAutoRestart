@@ -14,7 +14,7 @@ I tried many of the auto restart plugins out there, but all I could find were ei
 
 So I decided to create my own.
 
-[![bstats](https://bstats.org/signatures/bukkit/simpleautorestart.svg)](https://www.bstats.org/plugin/bukkit/SimpleAutoRestart/17760)
+[![bstats](https://bstats.org/signatures/bukkit/simpleautorestart.svg)](https://bstats.org/plugin/bukkit/SimpleAutoRestart/17760)
 
 ## Features
 
