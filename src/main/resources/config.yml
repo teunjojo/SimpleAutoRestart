@@ -1,6 +1,10 @@
 # The hour and minute when the server should restart (24 hour format)
+# Format: Day;Hour;Minute
+# Day can be: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, or Daily
+# Example: "Daily;03;00" for every day at 3 AM
 restartTime:
-  - "00:00"
+  - "Daily;03:00"
+
 # Add multiple times by adding a new line like: - '12:00'
 
 # Configure message and the corresponding pre-warning time in seconds
