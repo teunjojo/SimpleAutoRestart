@@ -20,11 +20,63 @@ public class RestartScheduler {
     public boolean scheduleRestart(String _restartTime, Map<Long, String> _messages, Map<Long, String> _titles,
             Map<Long, String> _subtitles, List<String> _commands) {
 
-        int hour = Integer.parseInt(_restartTime.split(":")[0]);
-        int minute = Integer.parseInt(_restartTime.split(":")[1]);
+        // If format follows old pattern HH:MM, correct it to Daily;HH:MM
+        if (_restartTime.matches("^([01]\\d|2[0-3]):([0-5]\\d)$")) {
+            _restartTime = "Daily;" + _restartTime;
+        }
+        if (!_restartTime.matches(
+                "^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Daily);([01]\\d|2[0-3]):([0-5]\\d)$")) {
+            return false;
+        }
+
+        String[] parts = _restartTime.split(";");
+        String dayPart = parts[0];
+        String timePart = parts[1];
+
+        int hour = Integer.parseInt(timePart.split(":")[0]);
+        int minute = Integer.parseInt(timePart.split(":")[1]);
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute).withSecond(0);
+
+        int targetDayOfWeek = 0;
+        if (!dayPart.equals("Daily")) {
+            switch (dayPart) {
+                case "Monday":
+                    targetDayOfWeek = 1;
+                    break;
+                case "Tuesday":
+                    targetDayOfWeek = 2;
+                    break;
+                case "Wednesday":
+                    targetDayOfWeek = 3;
+                    break;
+                case "Thursday":
+                    targetDayOfWeek = 4;
+                    break;
+                case "Friday":
+                    targetDayOfWeek = 5;
+                    break;
+                case "Saturday":
+                    targetDayOfWeek = 6;
+                    break;
+                case "Sunday":
+                    targetDayOfWeek = 7;
+                    break;
+                case "Daily":
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + dayPart);
+            }
+            int currentDayOfWeek = now.getDayOfWeek().getValue();
+            int daysUntilTarget = (targetDayOfWeek - currentDayOfWeek + 7) % 7;
+            if (daysUntilTarget == 0 && nextRestart.isBefore(now)) {
+                daysUntilTarget = 7;
+                nextRestart = nextRestart.plusWeeks(1);
+            } else {
+                nextRestart = nextRestart.plusDays(daysUntilTarget);
+            }
+        }
         if (now.compareTo(nextRestart) > 0)
             nextRestart = nextRestart.plusDays(1);
 
