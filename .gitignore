@@ -1,3 +1,4 @@
 target
 .vscode
 dependency-reduced-pom.xml
+test-server/
