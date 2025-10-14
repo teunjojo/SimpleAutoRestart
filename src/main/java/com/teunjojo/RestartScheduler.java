@@ -12,6 +12,7 @@ import java.util.TimerTask;
 public class RestartScheduler {
     private final SimpleAutoRestart plugin;
     private boolean restartCanceled = false;
+    private final Utility util = new Utility();
 
     public RestartScheduler(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -35,7 +36,7 @@ public class RestartScheduler {
         ZonedDateTime now = ZonedDateTime.now();
 
         int currentDayOfWeek = now.getDayOfWeek().getValue();
-        int targetDayOfWeek = weekDayToInt(dayPart);
+        int targetDayOfWeek = util.weekDayToInt(dayPart);
 
         if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
             return false;
@@ -132,28 +133,5 @@ public class RestartScheduler {
 
     public void setRestartCanceled(boolean restartCanceled) {
         this.restartCanceled = restartCanceled;
-    }
-
-    public int weekDayToInt(String day) {
-        switch (day) {
-            case "Daily":
-                return 0;
-            case "Monday":
-                return 1;
-            case "Tuesday":
-                return 2;
-            case "Wednesday":
-                return 3;
-            case "Thursday":
-                return 4;
-            case "Friday":
-                return 5;
-            case "Saturday":
-                return 6;
-            case "Sunday":
-                return 7;
-            default:
-                return -1;
-        }
     }
 }
