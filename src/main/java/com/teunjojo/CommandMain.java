@@ -48,34 +48,44 @@ public class CommandMain implements TabExecutor {
         if (sender instanceof Player) {
             ArrayList<String> completions = new ArrayList<>();
 
-            switch (args.length) {
-                case 1:
+            switch (args[0]) {
+                case "cancel":
+                    break;
+                case "resume":
+                    break;
+                case "status":
+                    break;
+                case "set":
+                    switch (args.length) {
+                        case 2:
+                            for (int i = 0; i < 24; i++) {
+                                completions.add(String.valueOf(i));
+                            }
+                            break;
+                        case 3:
+                            for (int i = 0; i < 60; i++) {
+                                completions.add(String.valueOf(i));
+                            }
+                            break;
+                        case 4:
+                            completions.add("Daily");
+                            completions.add("Monday");
+                            completions.add("Tuesday");
+                            completions.add("Wednesday");
+                            completions.add("Thursday");
+                            completions.add("Friday");
+                            completions.add("Saturday");
+                            completions.add("Sunday");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
                     completions.add("cancel");
                     completions.add("resume");
                     completions.add("status");
                     completions.add("set");
-                    break;
-                case 2:
-                    for (int i = 0; i < 24; i++) {
-                        completions.add(String.valueOf(i));
-                    }
-                    break;
-                case 3:
-                    for (int i = 0; i < 60; i++) {
-                        completions.add(String.valueOf(i));
-                    }
-                    break;
-                case 4:
-                    completions.add("Daily");
-                    completions.add("Monday");
-                    completions.add("Tuesday");
-                    completions.add("Wednesday");
-                    completions.add("Thursday");
-                    completions.add("Friday");
-                    completions.add("Saturday");
-                    completions.add("Sunday");
-                    break;
-                default:
                     break;
             }
             return completions;
