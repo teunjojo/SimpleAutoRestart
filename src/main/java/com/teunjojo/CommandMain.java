@@ -2,7 +2,6 @@ package com.teunjojo;
 
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.t;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -161,7 +160,7 @@ public class CommandMain implements TabExecutor {
         }
 
         sender.sendMessage("Auto restart is scheduled at " + _restartTime);
-        sender.sendMessage("Note that this scheduled time is not saved and will be reset on server restart.");
+        sender.sendMessage(ChatColor.YELLOW + "Note that this scheduled time is not saved and will be reset on server restart.");
 
         restartScheduler.setRestartCanceled(false);
         return true;
