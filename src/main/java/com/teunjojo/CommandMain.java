@@ -32,7 +32,7 @@ public class CommandMain implements TabExecutor {
                 return commandStatus(sender);
             case "set":
                 if (!commandSetRestart(sender, args)) {
-                    sender.sendMessage("Usage: /" + label + " set <hour> <minute>");
+                    sender.sendMessage("Usage: /" + label + " set <hour> <minute> [day]");
                 }
                 return true;
         }
@@ -61,8 +61,17 @@ public class CommandMain implements TabExecutor {
                         completions.add(String.valueOf(i));
                     }
                     break;
+                case 4:
+                    completions.add("Daily");
+                    completions.add("Monday");
+                    completions.add("Tuesday");
+                    completions.add("Wednesday");
+                    completions.add("Thursday");
+                    completions.add("Friday");
+                    completions.add("Saturday");
+                    completions.add("Sunday");
+                    break;
                 default:
-                    completions.add("");
                     break;
             }
             return completions;
@@ -101,7 +110,11 @@ public class CommandMain implements TabExecutor {
     }
 
     private boolean commandSetRestart(CommandSender sender, String[] args) {
-        if (args.length != 3) {
+        String day = "Daily";
+        if (args.length == 4) {
+            day = args[3];
+        }
+        if (args.length < 3) {
             return false;
         }
 
@@ -112,8 +125,10 @@ public class CommandMain implements TabExecutor {
             return false;
         }
 
-        sender.sendMessage("Auto restart is scheduled at " + String.format("%02d", hour) + ":" + String.format("%02d", minute));
-        restartScheduler.scheduleRestart(String.format("%02d:%02d", hour, minute), plugin.getMessages(), plugin.getTitles(),
+        String _restartTime = day + ";" + String.format("%02d", hour) + ":" + String.format("%02d", minute);
+
+        sender.sendMessage("Auto restart is scheduled at " + _restartTime);
+        restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
                 plugin.getSubtitles(), plugin.getCommands());
         restartScheduler.setRestartCanceled(false);
         return true;
