@@ -161,6 +161,7 @@ public class CommandMain implements TabExecutor {
         }
 
         sender.sendMessage("Auto restart is scheduled at " + _restartTime);
+        sender.sendMessage("Note that this scheduled time is not saved and will be reset on server restart.");
 
         restartScheduler.setRestartCanceled(false);
         return true;
