@@ -2,6 +2,9 @@ package com.teunjojo;
 
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.t;
+
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ public class CommandMain implements TabExecutor {
 
     private SimpleAutoRestart plugin;
     private final RestartScheduler restartScheduler;
+    private final Utility util = new Utility();
 
     public CommandMain(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -110,26 +114,44 @@ public class CommandMain implements TabExecutor {
     }
 
     private boolean commandSetRestart(CommandSender sender, String[] args) {
-        String day = "Daily";
-        if (args.length == 4) {
-            day = args[3];
-        }
+        String day = "Daily"; // Default day
+        int hour = -1;
+        int minute = -1;
+
         if (args.length < 3) {
+            sender.sendMessage(ChatColor.RED + "Not enough arguments!");
             return false;
         }
 
-        int hour = Integer.parseInt(args[1]);
-        int minute = Integer.parseInt(args[2]);
+        if (args.length >= 4) {
+            day = args[3];
+        }
 
-        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        try {
+            hour = Integer.parseInt(args[1]);
+            minute = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(ChatColor.RED + "Hour and minute must be numbers!");
+            return false;
+        }
+
+        if (util.weekDayToInt(day) == -1) {
+            sender.sendMessage(ChatColor.RED + "Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.");
             return false;
         }
 
         String _restartTime = day + ";" + String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
-        sender.sendMessage("Auto restart is scheduled at " + _restartTime);
-        restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
+        boolean success = restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
                 plugin.getSubtitles(), plugin.getCommands());
+
+        if (!success) {
+            sender.sendMessage(ChatColor.RED +"Invalid time format!");
+            return false;
+        }
+
+        sender.sendMessage("Auto restart is scheduled at " + _restartTime);
+
         restartScheduler.setRestartCanceled(false);
         return true;
 
