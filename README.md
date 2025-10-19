@@ -79,7 +79,7 @@ commands:
 - `/simpleautorestart cancel` - Cancel the next restart.
 - `/simpleautorestart resume` - Resume the next restart.
 - `/simpleautorestart status` - Show the status of the next restart.
-- `/simpleautorestart set <hour> <minute>` - Schedule a restart at a specific time.
+- `/simpleautorestart set <hour> <minute> [day]` - Schedule a restart at a specific time.
 
 ## Troubleshooting
 
