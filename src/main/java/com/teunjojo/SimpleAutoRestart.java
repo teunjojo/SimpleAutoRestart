@@ -1,16 +1,23 @@
 package com.teunjojo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bstats.bukkit.Metrics;
+
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public final class SimpleAutoRestart extends JavaPlugin {
 
     SimpleAutoRestart plugin = this;
 
-    private final RestartScheduler restartScheduler = new RestartScheduler(plugin);
+    private BukkitAudiences adventure;
+
+    private RestartScheduler restartScheduler;
 
     private List<String> restartTimes = new ArrayList<>();
     private Map<Long, String> messages = new HashMap<>();
@@ -37,10 +44,14 @@ public final class SimpleAutoRestart extends JavaPlugin {
             }
         });
 
+        this.adventure = BukkitAudiences.create(this);
+        this.restartScheduler = new RestartScheduler(this);
+
         // Register SimpleAutoRestart commands
-        this.getCommand("autorestart").setExecutor(new CommandMain(plugin));
-        this.getCommand("simpleautorestart").setExecutor(new CommandMain(plugin));
-        this.getCommand("sar").setExecutor(new CommandMain(plugin));
+        CommandMain commandMain = new CommandMain(plugin);
+        this.getCommand("autorestart").setExecutor(commandMain);
+        this.getCommand("simpleautorestart").setExecutor(commandMain);
+        this.getCommand("sar").setExecutor(commandMain);
 
         // Load the configuration
         if (loadConfig() == null) {
@@ -53,6 +64,14 @@ public final class SimpleAutoRestart extends JavaPlugin {
             if (!restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands)) {
                 getLogger().severe("Failed to schedule the restart for: " + restartTime);
             }
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
         }
     }
 
@@ -133,6 +152,13 @@ public final class SimpleAutoRestart extends JavaPlugin {
             this.commands = config.getStringList("commands");
         }
         return config;
+    }
+
+    public BukkitAudiences adventure() {
+        if (this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
     }
 
     public RestartScheduler getRestartScheduler() {
