@@ -51,7 +51,7 @@ public class RestartScheduler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (getNextRestart() == nextRestart) {
+                    if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
                         Audience adventureAudience = plugin.adventure().all();
 
                         String messageRaw = _messages.get(delay);
@@ -78,7 +78,7 @@ public class RestartScheduler {
 
                 @Override
                 public void run() {
-                    if (getNextRestart() == nextRestart) {
+                    if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
                         Audience adventurePlayers = plugin.adventure().players();
 
                         String titleRaw = _titles.get(delay);
@@ -108,12 +108,15 @@ public class RestartScheduler {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (getNextRestart() == nextRestart)
+                if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
                     _commands.forEach(command -> {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                         });
                     });
+                }
+                scheduledRestarts.remove(nextRestart);
+                canceledRestarts.remove(nextRestart);
             }
         }, initialDelayInSeconds * 1000);
 
