@@ -123,13 +123,21 @@ public class CommandMain implements TabExecutor {
         ArrayList<ZonedDateTime> sortedRestarts = new ArrayList<>(allRestarts);
         sortedRestarts.sort(ZonedDateTime::compareTo);
 
+        boolean scheduledReached = false;
+
         sender.sendMessage("Scheduled Restarts:");
         for (ZonedDateTime restart : sortedRestarts) {
             String formattedString = restart.format(formatter);
             if (restartScheduler.isRestartCanceled(restart)) {
-                sender.sendMessage(ChatColor.RED + formattedString + " (Canceled)");
+                sender.sendMessage(ChatColor.GRAY + formattedString + " (Canceled)");
             } else {
-                sender.sendMessage(ChatColor.GREEN + formattedString + " (Scheduled)");
+                if (scheduledReached) {
+                    sender.sendMessage(ChatColor.STRIKETHROUGH + formattedString + " (Scheduled)");
+                    continue;
+                }
+                sender.sendMessage(ChatColor.BOLD + formattedString + " (Scheduled)");
+                scheduledReached = true;
+
             }
         }
 
