@@ -219,8 +219,8 @@ public class RestartScheduler {
             }
         } else { // Specific day
             daysUntilTarget = (targetDayOfWeek - currentDayOfWeek + 7) % 7;
-            if (nextRestart.isBefore(now)) {
-                daysUntilTarget = 7; // Schedule for next week if the time has already passed today
+            if (daysUntilTarget == 0 && nextRestart.isBefore(now)) {
+                daysUntilTarget += 7; // Schedule for next week if the time has already passed today
             }
         }
 
