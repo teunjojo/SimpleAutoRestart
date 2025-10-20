@@ -94,31 +94,31 @@ public class CommandMain implements TabExecutor {
     }
 
     private boolean commandCancelRestart(CommandSender sender) {
-        if (restartScheduler.isRestartCanceled()) {
-            sender.sendMessage("Next auto restart is already canceled");
-            return true;
-        }
+        // if (restartScheduler.isRestartCanceled()) {
+        //     sender.sendMessage("Next auto restart is already canceled");
+        //     return true;
+        // }
         sender.sendMessage("Next auto restart is canceled");
-        restartScheduler.setRestartCanceled(true);
+        //restartScheduler.setRestartCanceled(true);
         return true;
     }
 
     private boolean commandResumeRestart(CommandSender sender) {
-        if (!restartScheduler.isRestartCanceled()) {
-            sender.sendMessage("Next auto restart is already scheduled");
-            return true;
-        }
+        // if (!restartScheduler.isRestartCanceled()) {
+        //     sender.sendMessage("Next auto restart is already scheduled");
+        //     return true;
+        // }
         sender.sendMessage("Next auto restart resumed");
-        restartScheduler.setRestartCanceled(false);
+        // restartScheduler.setRestartCanceled(false);
         return true;
     }
 
     private boolean commandStatus(CommandSender sender) {
-        if (restartScheduler.isRestartCanceled()) {
-            sender.sendMessage("Next auto restart is canceled");
-        } else {
-            sender.sendMessage("Next auto restart is scheduled");
-        }
+        // if (restartScheduler.isRestartCanceled()) {
+        //     sender.sendMessage("Next auto restart is canceled");
+        // } else {
+        //     sender.sendMessage("Next auto restart is scheduled");
+        // }
         return true;
     }
 
@@ -151,6 +151,11 @@ public class CommandMain implements TabExecutor {
 
         String _restartTime = day + ";" + String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
+        if (restartScheduler.isRestartScheduled(_restartTime)) {
+            sender.sendMessage(ChatColor.RED + "A restart is already scheduled for this time!");
+            return false;
+        }
+
         boolean success = restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
                 plugin.getSubtitles(), plugin.getCommands());
 
@@ -162,7 +167,6 @@ public class CommandMain implements TabExecutor {
         sender.sendMessage("Auto restart is scheduled at " + _restartTime);
         sender.sendMessage(ChatColor.YELLOW + "Note that this scheduled time is not saved and will be reset on server restart.");
 
-        restartScheduler.setRestartCanceled(false);
         return true;
 
     }

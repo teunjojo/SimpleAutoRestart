@@ -10,16 +10,18 @@ import net.kyori.adventure.text.Component;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class RestartScheduler {
     private final SimpleAutoRestart plugin;
-    private boolean restartCanceled = false;
     private final Utility util = new Utility();
     private final MiniMessage mm = MiniMessage.miniMessage();
+    private Set<ZonedDateTime> scheduledRestarts = new HashSet<ZonedDateTime>();
 
     public RestartScheduler(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -28,47 +30,14 @@ public class RestartScheduler {
     public boolean scheduleRestart(String _restartTime, Map<Long, String> _messages, Map<Long, String> _titles,
             Map<Long, String> _subtitles, List<String> _commands) {
 
-        // If format follows old pattern HH:MM, correct it to Daily;HH:MM
-        if (_restartTime.matches("^([01]\\d|2[0-3]):([0-5]\\d)$")) {
-            _restartTime = "Daily;" + _restartTime;
-        }
-
-        String[] parts = _restartTime.split(";");
-        String dayPart = parts[0];
-        String timePart = parts[1];
-
-        int hour = Integer.parseInt(timePart.split(":")[0]);
-        int minute = Integer.parseInt(timePart.split(":")[1]);
-
+        ZonedDateTime nextRestart = parseRestartTime(_restartTime);
         ZonedDateTime now = ZonedDateTime.now();
 
-        int currentDayOfWeek = now.getDayOfWeek().getValue();
-        int targetDayOfWeek = util.weekDayToInt(dayPart);
-
-        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        // Check if a restart is already scheduled for this time
+        if (isRestartScheduled(nextRestart)) {
+            plugin.getLogger().warning("A restart is already scheduled for: " + _restartTime);
             return false;
         }
-
-        if (targetDayOfWeek == -1) {
-            return false;
-        }
-
-        ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute).withSecond(0);
-
-        int daysUntilTarget = 0;
-
-        if (targetDayOfWeek == 0) { // Daily
-            if (nextRestart.isBefore(now)) {
-                daysUntilTarget = 1; // Schedule for the next day if the time has already passed today
-            }
-        } else { // Specific day
-            daysUntilTarget = (targetDayOfWeek - currentDayOfWeek + 7) % 7;
-            if (nextRestart.isBefore(now)) {
-                daysUntilTarget = 7; // Schedule for next week if the time has already passed today
-            }
-        }
-
-        nextRestart = nextRestart.plusDays(daysUntilTarget);
 
         Duration duration = Duration.between(now, nextRestart);
         long initialDelayInSeconds = duration.getSeconds();
@@ -81,7 +50,7 @@ public class RestartScheduler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!RestartScheduler.this.isRestartCanceled()) {
+                    if (getNextRestart() == nextRestart) {
                         Audience adventureAudience = plugin.adventure().all();
 
                         String messageRaw = _messages.get(delay);
@@ -107,7 +76,7 @@ public class RestartScheduler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!RestartScheduler.this.isRestartCanceled()) {
+                    if (getNextRestart() == nextRestart) {
                         Audience adventurePlayers = plugin.adventure().players();
 
                         String titleRaw = _titles.get(delay);
@@ -137,7 +106,7 @@ public class RestartScheduler {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!RestartScheduler.this.isRestartCanceled())
+                if (getNextRestart() == nextRestart)
                     _commands.forEach(command -> {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
@@ -146,15 +115,76 @@ public class RestartScheduler {
             }
         }, initialDelayInSeconds * 1000);
 
+        // Store the scheduled restart time
+        scheduledRestarts.add(nextRestart);
+
         plugin.getLogger().info("Reboot set for: " + _restartTime);
         return true;
     }
 
-    public boolean isRestartCanceled() {
-        return restartCanceled;
+    public boolean isRestartScheduled(ZonedDateTime dateTime) {
+        return scheduledRestarts.contains(dateTime);
     }
 
-    public void setRestartCanceled(boolean restartCanceled) {
-        this.restartCanceled = restartCanceled;
+    public boolean isRestartScheduled(String _restartTime) {
+        ZonedDateTime restartTime = parseRestartTime(_restartTime);
+        return isRestartScheduled(restartTime);
+    }
+
+    public void cancelRestart(ZonedDateTime dateTime) {
+        scheduledRestarts.remove(dateTime);
+    }
+
+    public void cancelRestart(String _restartTime) {
+        ZonedDateTime restartTime = parseRestartTime(_restartTime);
+        cancelRestart(restartTime);
+    }
+
+    public ZonedDateTime getNextRestart() {
+        // Find the earliest scheduled restart
+        ZonedDateTime nextRestart = null;
+        for (ZonedDateTime scheduledRestart : scheduledRestarts) {
+            if (nextRestart == null || scheduledRestart.isBefore(nextRestart)) {
+                nextRestart = scheduledRestart;
+            }
+        }
+        return nextRestart;
+    }
+
+    private ZonedDateTime parseRestartTime(String _restartTime) {
+        String[] parts = _restartTime.split(";");
+        String dayPart = parts[0];
+        String timePart = parts[1];
+
+        int hour = Integer.parseInt(timePart.split(":")[0]);
+        int minute = Integer.parseInt(timePart.split(":")[1]);
+
+        ZonedDateTime now = ZonedDateTime.now();
+
+        int currentDayOfWeek = now.getDayOfWeek().getValue();
+        int targetDayOfWeek = util.weekDayToInt(dayPart);
+
+        ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute);
+
+        // remove seconds and nanoseconds
+        nextRestart = nextRestart.withSecond(0).withNano(0);
+
+        int daysUntilTarget = 0;
+
+        if (targetDayOfWeek == 0) { // Daily
+            if (nextRestart.isBefore(now)) {
+                daysUntilTarget = 1; // Schedule for the next day if the time has already passed today
+            }
+        } else { // Specific day
+            daysUntilTarget = (targetDayOfWeek - currentDayOfWeek + 7) % 7;
+            if (nextRestart.isBefore(now)) {
+                daysUntilTarget = 7; // Schedule for next week if the time has already passed today
+            }
+        }
+
+        // Adjust the nextRestart date to the correct day
+        nextRestart = nextRestart.plusDays(daysUntilTarget);
+
+        return nextRestart;
     }
 }
