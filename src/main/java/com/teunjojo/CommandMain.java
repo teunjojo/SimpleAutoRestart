@@ -55,30 +55,7 @@ public class CommandMain implements TabExecutor {
                 case "status":
                     break;
                 case "set":
-                    switch (args.length) {
-                        case 2:
-                            for (int i = 0; i < 24; i++) {
-                                completions.add(String.valueOf(i));
-                            }
-                            break;
-                        case 3:
-                            for (int i = 0; i < 60; i++) {
-                                completions.add(String.valueOf(i));
-                            }
-                            break;
-                        case 4:
-                            completions.add("Daily");
-                            completions.add("Monday");
-                            completions.add("Tuesday");
-                            completions.add("Wednesday");
-                            completions.add("Thursday");
-                            completions.add("Friday");
-                            completions.add("Saturday");
-                            completions.add("Sunday");
-                            break;
-                        default:
-                            break;
-                    }
+                    completions.addAll(tabCompleteDate(args, 1));
                     break;
                 default:
                     completions.add("cancel");
@@ -95,18 +72,18 @@ public class CommandMain implements TabExecutor {
 
     private boolean commandCancelRestart(CommandSender sender) {
         // if (restartScheduler.isRestartCanceled()) {
-        //     sender.sendMessage("Next auto restart is already canceled");
-        //     return true;
+        // sender.sendMessage("Next auto restart is already canceled");
+        // return true;
         // }
         sender.sendMessage("Next auto restart is canceled");
-        //restartScheduler.setRestartCanceled(true);
+        // restartScheduler.setRestartCanceled(true);
         return true;
     }
 
     private boolean commandResumeRestart(CommandSender sender) {
         // if (!restartScheduler.isRestartCanceled()) {
-        //     sender.sendMessage("Next auto restart is already scheduled");
-        //     return true;
+        // sender.sendMessage("Next auto restart is already scheduled");
+        // return true;
         // }
         sender.sendMessage("Next auto restart resumed");
         // restartScheduler.setRestartCanceled(false);
@@ -115,9 +92,9 @@ public class CommandMain implements TabExecutor {
 
     private boolean commandStatus(CommandSender sender) {
         // if (restartScheduler.isRestartCanceled()) {
-        //     sender.sendMessage("Next auto restart is canceled");
+        // sender.sendMessage("Next auto restart is canceled");
         // } else {
-        //     sender.sendMessage("Next auto restart is scheduled");
+        // sender.sendMessage("Next auto restart is scheduled");
         // }
         return true;
     }
@@ -145,7 +122,8 @@ public class CommandMain implements TabExecutor {
         }
 
         if (util.weekDayToInt(day) == -1) {
-            sender.sendMessage(ChatColor.RED + "Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.");
+            sender.sendMessage(ChatColor.RED
+                    + "Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.");
             return false;
         }
 
@@ -160,14 +138,45 @@ public class CommandMain implements TabExecutor {
                 plugin.getSubtitles(), plugin.getCommands());
 
         if (!success) {
-            sender.sendMessage(ChatColor.RED +"Invalid time format!");
+            sender.sendMessage(ChatColor.RED + "Invalid time format!");
             return false;
         }
 
         sender.sendMessage("Auto restart is scheduled at " + _restartTime);
-        sender.sendMessage(ChatColor.YELLOW + "Note that this scheduled time is not saved and will be reset on server restart.");
+        sender.sendMessage(
+                ChatColor.YELLOW + "Note that this scheduled time is not saved and will be reset on server restart.");
 
         return true;
 
+    }
+
+    private ArrayList<String> tabCompleteDate(String[] args, int startIndex) {
+        ArrayList<String> completions = new ArrayList<>();
+        
+        switch (args.length - startIndex) {
+            case 1:
+                for (int i = 0; i < 24; i++) {
+                    completions.add(String.valueOf(i));
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 60; i++) {
+                    completions.add(String.valueOf(i));
+                }
+                break;
+            case 3:
+                completions.add("Daily");
+                completions.add("Monday");
+                completions.add("Tuesday");
+                completions.add("Wednesday");
+                completions.add("Thursday");
+                completions.add("Friday");
+                completions.add("Saturday");
+                completions.add("Sunday");
+                break;
+            default:
+                break;
+        }
+        return completions;
     }
 }
