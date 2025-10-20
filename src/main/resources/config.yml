@@ -7,6 +7,14 @@ restartTime:
 
 # Add multiple times by adding a new line like: - '12:00'
 
+
+#
+# Messages
+#
+
+# Messages can either use legacy or MiniMessage (preferred) color codes.
+# https://webui.advntr.dev/
+
 # Configure message and the corresponding pre-warning time in seconds
 messages:
   "0": "Restarting now"
@@ -19,12 +27,12 @@ messages:
   "300": "Restarting in 5 minutes"
 
 titles:
-  "300": "§l§4Warning"
-  "3": "§l§4Warning"
+  "300": "<bold><dark_red>Warning"
+  "3": "<bold><dark_red>Warning"
 
 subtitles:
-  "300": "§6Restarting in 5 minutes"
-  "3": "§6Restarting now..."
+  "300": "<gold>Restarting in 5 minutes"
+  "3": "<gold>Restarting now..."
 
 # The commands that will be executed at restart time
 commands:
