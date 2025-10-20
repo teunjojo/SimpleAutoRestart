@@ -2,6 +2,12 @@ package com.teunjojo;
 
 import org.bukkit.Bukkit;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -13,6 +19,7 @@ public class RestartScheduler {
     private final SimpleAutoRestart plugin;
     private boolean restartCanceled = false;
     private final Utility util = new Utility();
+    private final MiniMessage mm = MiniMessage.miniMessage();
 
     public RestartScheduler(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -74,8 +81,21 @@ public class RestartScheduler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!RestartScheduler.this.isRestartCanceled())
-                        Bukkit.broadcastMessage(_messages.get(delay));
+                    if (!RestartScheduler.this.isRestartCanceled()) {
+                        Audience adventureAudience = plugin.adventure().all();
+
+                        String messageRaw = _messages.get(delay);
+
+                        // Parse the message using MiniMessage and convert legacy formatting
+                        Component messageLegacy = LegacyComponentSerializer.legacyAmpersand()
+                                .deserialize(messageRaw.replace('§', '&'));
+
+                        String serializedMessage = mm.serialize(messageLegacy).replace("\\", "");
+
+                        Component messageFinal = mm.deserialize(serializedMessage);
+
+                        adventureAudience.sendMessage(messageFinal);
+                    }
                 }
             }, (initialDelayInSeconds - delay) * 1000);
         }
@@ -87,25 +107,28 @@ public class RestartScheduler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!RestartScheduler.this.isRestartCanceled())
-                        Bukkit.getOnlinePlayers().forEach(player -> {
-                            player.sendTitle(_titles.get(delay), null, 10, 70, 20);
-                        });
-                }
-            }, (initialDelayInSeconds - delay) * 1000);
-        }
+                    if (!RestartScheduler.this.isRestartCanceled()) {
+                        Audience adventurePlayers = plugin.adventure().players();
 
-        // Schedule the restart subtitle
-        for (Long delay : _subtitles.keySet()) {
-            if (delay > initialDelayInSeconds)
-                continue;
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (!RestartScheduler.this.isRestartCanceled())
-                        Bukkit.getOnlinePlayers().forEach(player -> {
-                            player.sendTitle(null, _subtitles.get(delay), 10, 70, 20);
-                        });
+                        String titleRaw = _titles.get(delay);
+                        String subtitleRaw = _subtitles.get(delay);
+
+                        // Parse the message using MiniMessage and convert legacy formatting
+                        Component titleLegacy = LegacyComponentSerializer.legacyAmpersand()
+                                .deserialize(titleRaw.replace('§', '&'));
+                        Component subtitleLegacy = LegacyComponentSerializer.legacyAmpersand()
+                                .deserialize(subtitleRaw.replace('§', '&'));
+
+                        String serializedTitle = mm.serialize(titleLegacy).replace("\\", "");
+                        String serializedSubtitle = mm.serialize(subtitleLegacy).replace("\\", "");
+
+                        Component titleFinal = mm.deserialize(serializedTitle);
+                        Component subtitleFinal = mm.deserialize(serializedSubtitle);
+
+                        Title title = Title.title(titleFinal, subtitleFinal);
+
+                        adventurePlayers.showTitle(title);
+                    }
                 }
             }, (initialDelayInSeconds - delay) * 1000);
         }
