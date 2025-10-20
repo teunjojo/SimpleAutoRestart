@@ -3,7 +3,8 @@ package com.teunjojo;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,7 @@ public class CommandMain implements TabExecutor {
     private SimpleAutoRestart plugin;
     private final RestartScheduler restartScheduler;
     private final Utility util = new Utility();
+    private final MiniMessage mm = MiniMessage.miniMessage();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE - HH:mm");
 
@@ -27,7 +29,9 @@ public class CommandMain implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender _sender, Command command, String label, String[] args) {
+
+        Audience sender = plugin.adventure().sender(_sender);
 
         if (args.length == 0) {
             return false;
@@ -42,7 +46,7 @@ public class CommandMain implements TabExecutor {
                 return commandStatus(sender);
             case "set":
                 if (!commandSetRestart(sender, args)) {
-                    sender.sendMessage("Usage: /" + label + " set <hour> <minute> [day]");
+                    sender.sendMessage(mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
                 }
                 return true;
         }
@@ -77,11 +81,11 @@ public class CommandMain implements TabExecutor {
         return null;
     }
 
-    private boolean commandCancelRestart(CommandSender sender) {
+    private boolean commandCancelRestart(Audience sender) {
         ZonedDateTime restart = restartScheduler.getNextRestart();
 
         if (restartScheduler.isRestartCanceled(restart)) {
-            sender.sendMessage(ChatColor.RED + "Next auto restart is already canceled");
+            sender.sendMessage(mm.deserialize("<red>Next auto restart is already canceled"));
             return true;
         }
 
@@ -89,15 +93,15 @@ public class CommandMain implements TabExecutor {
 
         restartScheduler.cancelRestart(restart);
 
-        sender.sendMessage("Restart for " + formattedString + " is canceled");
+        sender.sendMessage(mm.deserialize("Restart for " + formattedString + " is canceled"));
         return true;
     }
 
-    private boolean commandResumeRestart(CommandSender sender) {
+    private boolean commandResumeRestart(Audience sender) {
         ZonedDateTime restart = restartScheduler.getNextRestart();
 
         if (!restartScheduler.isRestartCanceled(restart)) {
-            sender.sendMessage(ChatColor.RED + "Next auto restart is not canceled");
+            sender.sendMessage(mm.deserialize("<red>Next auto restart is not canceled"));
             return true;
         }
 
@@ -105,17 +109,18 @@ public class CommandMain implements TabExecutor {
 
         restartScheduler.resumeRestart(restart);
 
-        sender.sendMessage("Restart for " + formattedString + " is resumed");
+        sender.sendMessage(mm.deserialize("Restart for " + formattedString + " is resumed"));
         return true;
     }
 
-    private boolean commandStatus(CommandSender sender) {
+    private boolean commandStatus(Audience sender) {
+
         Set<ZonedDateTime> allRestarts = new HashSet<>();
         allRestarts.addAll(restartScheduler.getScheduledRestarts());
         allRestarts.addAll(restartScheduler.getCanceledRestarts());
 
         if (allRestarts.isEmpty()) {
-            sender.sendMessage("No restarts are scheduled.");
+            sender.sendMessage(mm.deserialize("No restarts are scheduled."));
             return true;
         }
 
@@ -125,17 +130,17 @@ public class CommandMain implements TabExecutor {
 
         boolean scheduledReached = false;
 
-        sender.sendMessage("Scheduled Restarts:");
+        sender.sendMessage(mm.deserialize("Scheduled Restarts:"));
         for (ZonedDateTime restart : sortedRestarts) {
             String formattedString = restart.format(formatter);
             if (restartScheduler.isRestartCanceled(restart)) {
-                sender.sendMessage(ChatColor.STRIKETHROUGH + formattedString + " (Canceled)");
+                sender.sendMessage(mm.deserialize("<strikethrough>" + formattedString + " (Canceled)"));
             } else {
                 if (scheduledReached) {
-                    sender.sendMessage(ChatColor.GRAY + formattedString + " (Scheduled)");
+                    sender.sendMessage(mm.deserialize("<gray><italic>" + formattedString + " (Scheduled)"));
                     continue;
                 }
-                sender.sendMessage(ChatColor.BOLD + formattedString + " (Scheduled)");
+                sender.sendMessage(mm.deserialize("<b>" + formattedString + " (Scheduled)"));
                 scheduledReached = true;
 
             }
@@ -144,7 +149,7 @@ public class CommandMain implements TabExecutor {
         return true;
     }
 
-    private boolean commandSetRestart(CommandSender sender, String[] args) {
+    private boolean commandSetRestart(Audience sender, String[] args) {
 
         // Remove the first argument
         String[] restartArgs = Arrays.copyOfRange(args, 1, args.length);
@@ -156,7 +161,7 @@ public class CommandMain implements TabExecutor {
         }
 
         if (restartScheduler.isRestartScheduled(_restartTime)) {
-            sender.sendMessage(ChatColor.RED + "A restart is already scheduled for this time!");
+            sender.sendMessage(mm.deserialize("<red>A restart is already scheduled for this time!"));
             return false;
         }
 
@@ -164,13 +169,13 @@ public class CommandMain implements TabExecutor {
                 plugin.getSubtitles(), plugin.getCommands());
 
         if (!success) {
-            sender.sendMessage(ChatColor.RED + "Invalid time format!");
+            sender.sendMessage(mm.deserialize("<red>Invalid time format!"));
             return false;
         }
 
-        sender.sendMessage("Auto restart is scheduled at " + _restartTime);
-        sender.sendMessage(
-                ChatColor.YELLOW + "Note that this scheduled time is not saved and will be reset on server restart.");
+        sender.sendMessage(mm.deserialize("Auto restart is scheduled at " + _restartTime));
+        sender.sendMessage(mm.deserialize(
+                "<yellow>Note that this scheduled time is not saved and will be reset on server restart."));
 
         return true;
 
@@ -206,13 +211,13 @@ public class CommandMain implements TabExecutor {
         return completions;
     }
 
-    private String buildRestartTime(CommandSender sender, String[] args) {
+    private String buildRestartTime(Audience sender, String[] args) {
         String day = "Daily"; // Default day
         int hour = -1;
         int minute = -1;
 
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "Not enough arguments!");
+            sender.sendMessage(mm.deserialize("<red>Not enough arguments!"));
             return null;
         }
 
@@ -224,13 +229,13 @@ public class CommandMain implements TabExecutor {
             hour = Integer.parseInt(args[0]);
             minute = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(ChatColor.RED + "Hour and minute must be numbers!");
+            sender.sendMessage(mm.deserialize("<red>Hour and minute must be numbers!"));
             return null;
         }
 
         if (util.weekDayToInt(day) == -1) {
-            sender.sendMessage(ChatColor.RED
-                    + "Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.");
+            sender.sendMessage(mm.deserialize(
+                    "<red>Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday."));
             return null;
         }
 
