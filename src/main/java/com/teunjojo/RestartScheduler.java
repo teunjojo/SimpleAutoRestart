@@ -22,6 +22,7 @@ public class RestartScheduler {
     private final Utility util = new Utility();
     private final MiniMessage mm = MiniMessage.miniMessage();
     private Set<ZonedDateTime> scheduledRestarts = new HashSet<ZonedDateTime>();
+    private Set<ZonedDateTime> canceledRestarts = new HashSet<ZonedDateTime>();
 
     public RestartScheduler(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -117,6 +118,7 @@ public class RestartScheduler {
 
         // Store the scheduled restart time
         scheduledRestarts.add(nextRestart);
+        canceledRestarts.remove(nextRestart);
 
         plugin.getLogger().info("Reboot set for: " + _restartTime);
         return true;
@@ -133,6 +135,7 @@ public class RestartScheduler {
 
     public void cancelRestart(ZonedDateTime dateTime) {
         scheduledRestarts.remove(dateTime);
+        canceledRestarts.add(dateTime);
     }
 
     public void cancelRestart(String _restartTime) {
@@ -140,18 +143,53 @@ public class RestartScheduler {
         cancelRestart(restartTime);
     }
 
+    public boolean isRestartCanceled(ZonedDateTime dateTime) {
+        return canceledRestarts.contains(dateTime);
+    }
+
+    public boolean isRestartCanceled(String _restartTime) {
+        ZonedDateTime restartTime = parseRestartTime(_restartTime);
+        return isRestartCanceled(restartTime);
+    }
+
+    public void resumeRestart(ZonedDateTime dateTime) {
+        canceledRestarts.remove(dateTime);
+        scheduledRestarts.add(dateTime);
+    }
+
+    public void resumeRestart(String _restartTime) {
+        ZonedDateTime restartTime = parseRestartTime(_restartTime);
+        resumeRestart(restartTime);
+    }
+
     public ZonedDateTime getNextRestart() {
         // Find the earliest scheduled restart
         ZonedDateTime nextRestart = null;
+        ZonedDateTime nextScheduledRestart = null;
         for (ZonedDateTime scheduledRestart : scheduledRestarts) {
-            if (nextRestart == null || scheduledRestart.isBefore(nextRestart)) {
-                nextRestart = scheduledRestart;
+            if (nextScheduledRestart == null || scheduledRestart.isBefore(nextScheduledRestart)) {
+                nextScheduledRestart = scheduledRestart;
             }
         }
+
+        ZonedDateTime nextCanceledRestart = null;
+        for (ZonedDateTime canceledRestart : canceledRestarts) {
+            if (nextCanceledRestart == null || canceledRestart.isBefore(nextCanceledRestart)) {
+                nextCanceledRestart = canceledRestart;
+            }
+        }
+
+        if (nextScheduledRestart != null && (nextCanceledRestart == null
+                || nextScheduledRestart.isBefore(nextCanceledRestart))) {
+            nextRestart = nextScheduledRestart;
+        } else {
+            nextRestart = nextCanceledRestart;
+        }
+
         return nextRestart;
     }
 
-    private ZonedDateTime parseRestartTime(String _restartTime) {
+    public ZonedDateTime parseRestartTime(String _restartTime) {
         String[] parts = _restartTime.split(";");
         String dayPart = parts[0];
         String timePart = parts[1];
