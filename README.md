@@ -10,7 +10,7 @@
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact.svg)](https://bukkit.org/)
 [![folia](https://badges.penpow.dev/badges/unsupported/folia/compact.svg)](https://papermc.io/software/folia)
 
-I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20 and therefore not compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate).
+I tried many of the auto restart plugins out there, but all I could find were either too complex or tick based. This means they were not accurate when TPS drops below 20.
 
 So I decided to create my own.
 
@@ -18,17 +18,19 @@ So I decided to create my own.
 
 ## Features
 
-- Schedule automatic restarts at a specific times and days.
-- Warning messages broadcasted to players before restart.
-- Schedule multiple restarts.
+- Schedule automatic restarts at a specific times and days. (eg. `Wednesday;00:00`, `Sunday;3:00`)
+- Customizable warning messages.
+- Canceling/resuming restarts
 - Realtime based and not tick based for more accurate.
-- Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
 - [MiniMessage](https://docs.advntr.dev/minimessage/) support
+- Open Source!
 
 ## What it looks like in game (although you can customize this):
+
 ![Chat](https://i.imgur.com/ZjQq3sq.png)
 
 ## What it looks like in the server console (although you can customize this):
+
 ![Console](https://i.imgur.com/Kshy5U5.png)
 
 ## Installation
