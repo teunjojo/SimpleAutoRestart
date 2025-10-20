@@ -18,11 +18,12 @@ So I decided to create my own.
 
 ## Features
 
-- Schedule automatic restarts at a specific times.
+- Schedule automatic restarts at a specific times and days.
 - Warning messages broadcasted to players before restart.
 - Schedule multiple restarts.
 - Realtime based and not tick based for more accurate.
 - Compatible with plugins like [Hibernate](https://www.spigotmc.org/resources/hibernate.4441/) and [Server Naptime](https://github.com/gvk/MinecraftPluginServerHibernate)
+- [MiniMessage](https://docs.advntr.dev/minimessage/) support
 
 ## What it looks like in game (although you can customize this):
 ![Chat](https://i.imgur.com/ZjQq3sq.png)
@@ -38,7 +39,7 @@ So I decided to create my own.
 4. Start or restart the server.
 5. Configure the plugin by editing the config.yml file in the plugins/SimpleAutoRestart folder.
 
-## Configuration
+## Default Configuration
 
 ```yml
 # The hour and minute when the server should restart (24 hour format)
@@ -47,30 +48,39 @@ So I decided to create my own.
 # Example: "Daily;03;00" for every day at 3 AM
 restartTime:
   - "Daily;03:00"
+
 # Add multiple times by adding a new line like: - '12:00'
+
+
+#
+# Messages
+#
+
+# Messages can either use legacy or MiniMessage (preferred) color codes.
+# https://webui.advntr.dev/
 
 # Configure message and the corresponding pre-warning time in seconds
 messages:
-  '0': 'Restarting now'
-  '1': 'Restarting in 1 second'
-  '2': 'Restarting in 2 seconds'
-  '3': 'Restarting in 3 seconds'
-  '60': 'Restarting in 1 minute'
-  '120': 'Restarting in 2 minutes'
-  '180': 'Restarting in 3 minutes'
-  '300': 'Restarting in 5 minutes'
+  "0": "Restarting now"
+  "1": "Restarting in 1 second"
+  "2": "Restarting in 2 seconds"
+  "3": "Restarting in 3 seconds"
+  "60": "Restarting in 1 minute"
+  "120": "Restarting in 2 minutes"
+  "180": "Restarting in 3 minutes"
+  "300": "Restarting in 5 minutes"
 
-titles: 
-  '300' : '§l§4Warning'
-  '3' : '§l§4Warning'
+titles:
+  "300": "<bold><dark_red>Warning"
+  "3": "<bold><dark_red>Warning"
 
 subtitles:
-  '300' : "§6Restarting in 5 minutes"
-  '3' : "§6Restarting now..."
+  "300": "<gold>Restarting in 5 minutes"
+  "3": "<gold>Restarting now..."
 
 # The commands that will be executed at restart time
 commands:
-- 'restart'
+  - "restart"
 ```
 
 ## Commands
