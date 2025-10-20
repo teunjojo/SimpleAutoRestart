@@ -9,7 +9,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CommandMain implements TabExecutor {
 
@@ -108,7 +110,25 @@ public class CommandMain implements TabExecutor {
     }
 
     private boolean commandStatus(CommandSender sender) {
-        // TODO: Implement restart status
+        Set<ZonedDateTime> allRestarts = new HashSet<>();
+        allRestarts.addAll(restartScheduler.getScheduledRestarts());
+        allRestarts.addAll(restartScheduler.getCanceledRestarts());
+
+        if (allRestarts.isEmpty()) {
+            sender.sendMessage("No restarts are scheduled.");
+            return true;
+        }
+
+        sender.sendMessage("Scheduled Restarts:");
+        for (ZonedDateTime restart : allRestarts) {
+            String formattedString = restart.format(formatter);
+            if (restartScheduler.isRestartCanceled(restart)) {
+                sender.sendMessage(ChatColor.RED + formattedString + " (Canceled)");
+            } else {
+                sender.sendMessage(ChatColor.GREEN + formattedString + " (Scheduled)");
+            }
+        }
+
         return true;
     }
 

@@ -75,6 +75,7 @@ public class RestartScheduler {
             if (delay > initialDelayInSeconds)
                 continue;
             timer.schedule(new TimerTask() {
+
                 @Override
                 public void run() {
                     if (getNextRestart() == nextRestart) {
@@ -224,5 +225,13 @@ public class RestartScheduler {
         nextRestart = nextRestart.plusDays(daysUntilTarget);
 
         return nextRestart;
+    }
+
+    public Set<ZonedDateTime> getScheduledRestarts() {
+        return scheduledRestarts;
+    }
+
+    public Set<ZonedDateTime> getCanceledRestarts() {
+        return canceledRestarts;
     }
 }
