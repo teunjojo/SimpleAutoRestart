@@ -19,7 +19,7 @@ public class CommandMain implements TabExecutor {
     private final RestartScheduler restartScheduler;
     private final Utility util = new Utility();
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE - HH:mm");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE - HH:mm");
 
     public CommandMain(SimpleAutoRestart plugin) {
         this.plugin = plugin;
