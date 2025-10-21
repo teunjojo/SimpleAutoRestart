@@ -91,7 +91,7 @@ commands:
 - `/simpleautorestart` or `/sar` or `/autorestart` - Show the help menu.
 - `/simpleautorestart cancel` - Cancel the next restart.
 - `/simpleautorestart resume` - Resume the next restart.
-- `/simpleautorestart status` - Show the status of the next restart.
+- `/simpleautorestart status` - Show the status of the scheduled restarts.
 - `/simpleautorestart set <hour> <minute> [day]` - Schedule a restart at a specific time.
 
 ## Troubleshooting
