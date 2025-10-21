@@ -45,10 +45,14 @@ public class CommandMain implements TabExecutor {
             case "status":
                 return commandStatus(sender);
             case "set":
-                if (!commandSetRestart(sender, args)) {
+                if (!commandSetRestart(sender, args))
                     sender.sendMessage(mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
-                }
+
                 return true;
+            case "reload":
+                return commandReload(sender);
+            default:
+                break;
         }
         return false;
     }
@@ -68,11 +72,14 @@ public class CommandMain implements TabExecutor {
                 case "set":
                     completions.addAll(tabCompleteDate(args, 1));
                     break;
+                case "reload":
+                    break;
                 default:
                     completions.add("cancel");
                     completions.add("resume");
                     completions.add("status");
                     completions.add("set");
+                    completions.add("reload");
                     break;
             }
             return completions;
@@ -179,6 +186,12 @@ public class CommandMain implements TabExecutor {
 
         return true;
 
+    }
+
+    private boolean commandReload(Audience sender) {
+        plugin.reload();
+        sender.sendMessage(mm.deserialize("Configuration reloaded successfully."));
+        return true;
     }
 
     private ArrayList<String> tabCompleteDate(String[] args, int startIndex) {

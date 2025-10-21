@@ -59,12 +59,7 @@ public final class SimpleAutoRestart extends JavaPlugin {
             return;
         }
 
-        // Schedule the restarts
-        for (String restartTime : this.restartTimes) {
-            if (!restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands)) {
-                getLogger().severe("Failed to schedule the restart for: " + restartTime);
-            }
-        }
+        scheduleRestarts();
     }
 
     @Override
@@ -73,6 +68,27 @@ public final class SimpleAutoRestart extends JavaPlugin {
             this.adventure.close();
             this.adventure = null;
         }
+    }
+
+    public void scheduleRestarts() {
+
+        // Schedule the restarts
+        for (String restartTime : this.restartTimes) {
+            if (!restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands)) {
+                getLogger().severe("Failed to schedule the restart for: " + restartTime);
+            }
+        }
+    }
+
+    public void reload() {
+        reloadConfig();
+        loadConfig();
+
+        // Reset the restart scheduler
+        restartScheduler.reset();
+
+        // Restart the auto restart process
+        scheduleRestarts();
     }
 
     public FileConfiguration loadConfig() {
@@ -184,4 +200,5 @@ public final class SimpleAutoRestart extends JavaPlugin {
     public List<String> getCommands() {
         return commands;
     }
+
 }

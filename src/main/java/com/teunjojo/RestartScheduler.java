@@ -23,6 +23,7 @@ public class RestartScheduler {
     private final MiniMessage mm = MiniMessage.miniMessage();
     private Set<ZonedDateTime> scheduledRestarts = new HashSet<ZonedDateTime>();
     private Set<ZonedDateTime> canceledRestarts = new HashSet<ZonedDateTime>();
+    private Timer timer = new Timer(true);
 
     public RestartScheduler(SimpleAutoRestart plugin) {
         this.plugin = plugin;
@@ -44,7 +45,6 @@ public class RestartScheduler {
         long initialDelayInSeconds = duration.getSeconds();
 
         // Schedule the restart messages
-        Timer timer = new Timer();
         for (Long delay : _messages.keySet()) {
             if (delay > initialDelayInSeconds)
                 continue;
@@ -236,5 +236,13 @@ public class RestartScheduler {
 
     public Set<ZonedDateTime> getCanceledRestarts() {
         return canceledRestarts;
+    }
+
+    public void reset() {
+        scheduledRestarts.clear();
+        canceledRestarts.clear();
+        // reset the timer
+        timer.cancel();
+        timer = new Timer();
     }
 }
