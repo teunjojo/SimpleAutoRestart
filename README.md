@@ -1,6 +1,7 @@
 # SimpleAutoRestart
 
 [![GitHub Release](https://img.shields.io/github/v/release/teunjojo/SimpleAutoRestart?style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/releases)
+[![Build SimpleAutoRestart](https://img.shields.io/github/actions/workflow/status/teunjojo/SimpleAutoRestart/maven.yml?label=dev%20build&style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/actions/workflows/maven.yml)
 
 [![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg)](https://github.com/teunjojo/SimpleAutoRestart)
 [![spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/spigot_vector.svg)](https://www.spigotmc.org/resources/simpleautorestart.107932/)
