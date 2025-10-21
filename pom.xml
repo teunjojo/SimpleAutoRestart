@@ -6,7 +6,7 @@
   <groupId>com.teunjojo</groupId>
   <name>SimpleAutoRestart</name>
   <description>Really simple Spigot plugin that automatically restarts your server.</description>
-  <version>2.10.0-dev</version>
+  <version>2.11.0-dev</version>
   <url>www.teunjojo.com</url>
   <artifactId>SimpleAutoRestart</artifactId>
   <packaging>jar</packaging>
