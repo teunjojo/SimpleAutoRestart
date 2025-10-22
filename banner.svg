@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="314"
+   viewBox="0 -960 47.999999 11.775"
+   width="1280"
+   fill="#e3e3e3"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="banner.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.43858969"
+     inkscape:cx="510.72791"
+     inkscape:cy="202.92314"
+     inkscape:window-width="1592"
+     inkscape:window-height="839"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer9" />
+  <rect
+     style="fill:#271300;fill-opacity:1;stroke-width:5.7549"
+     id="rect2"
+     width="48"
+     height="11.775"
+     x="-2.5000003e-07"
+     y="-960"
+     inkscape:label="background" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="logo+text"
+     transform="translate(192.31848,-3.7125001)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer8"
+       inkscape:label="logo"
+       transform="translate(0,464)">
+      <path
+         d="m -185.5953,-1410.64 q -1.38,0 -2.40499,-0.915 -1.025,-0.915 -1.175,-2.285 h 0.82 q 0.14,1.04 0.925,1.72 0.785,0.68 1.83499,0.68 1.17001,0 1.98501,-0.815 0.81499,-0.815 0.81499,-1.985 0,-1.17 -0.81499,-1.985 -0.815,-0.815 -1.98501,-0.815 -0.69,0 -1.29,0.32 -0.59999,0.32 -1.00999,0.88 h 1.1 v 0.8 h -2.40001 v -2.4 h 0.80001 v 0.94 q 0.50999,-0.64 1.245,-0.99 0.73499,-0.35 1.55499,-0.35 0.75,0 1.405,0.285 0.655,0.285 1.14,0.77 0.485,0.485 0.77,1.14 0.285,0.655 0.285,1.405 0,0.75 -0.285,1.405 -0.285,0.655 -0.77,1.14 -0.485,0.485 -1.14,0.77 -0.655,0.285 -1.405,0.285 z m 1.12,-1.92 -1.51999,-1.52 v -2.16 h 0.79999 v 1.84 l 1.28,1.28 z"
+         id="path1"
+         style="fill:#8a7454;fill-opacity:1;stroke-width:0.01"
+         inkscape:label="backdrop" />
+      <path
+         d="m -185.5953,-1410.96 q -1.38,0 -2.40499,-0.915 -1.025,-0.915 -1.175,-2.285 h 0.82 q 0.14,1.04 0.925,1.72 0.785,0.68 1.83499,0.68 1.17001,0 1.98501,-0.815 0.81499,-0.815 0.81499,-1.985 0,-1.17 -0.81499,-1.985 -0.815,-0.815 -1.98501,-0.815 -0.69,0 -1.29,0.32 -0.59999,0.32 -1.00999,0.88 h 1.1 v 0.8 h -2.40001 v -2.4 h 0.80001 v 0.94 q 0.50999,-0.64 1.245,-0.99 0.73499,-0.35 1.55499,-0.35 0.75,0 1.405,0.285 0.655,0.285 1.14,0.77 0.485,0.485 0.77,1.14 0.285,0.655 0.285,1.405 0,0.75 -0.285,1.405 -0.285,0.655 -0.77,1.14 -0.485,0.485 -1.14,0.77 -0.655,0.285 -1.405,0.285 z m 1.12,-1.92 -1.51999,-1.52 v -2.16 h 0.79999 v 1.84 l 1.28,1.28 z"
+         id="path2"
+         style="fill:#f9edc9;fill-opacity:1;stroke-width:0.01"
+         inkscape:label="foreground" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.2px;font-family:'JetBrainsMono Nerd Font Propo';-inkscape-font-specification:'JetBrainsMono Nerd Font Propo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9edc9;stroke-width:0.4"
+       x="-179.82568"
+       y="-949.44476"
+       id="text1"
+       inkscape:label="text"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.2px;font-family:'JetBrainsMono Nerd Font Propo';-inkscape-font-specification:'JetBrainsMono Nerd Font Propo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.4"
+         x="-179.82568"
+         y="-949.44476">SimpleAutoRestart</tspan></text>
+  </g>
+</svg>

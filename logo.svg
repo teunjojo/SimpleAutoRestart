@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="24px"
+   viewBox="0 -960 960 960"
+   width="24px"
+   fill="#e3e3e3"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="16.75"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:window-width="1592"
+     inkscape:window-height="839"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <rect
+     style="fill:#271300;fill-opacity:1;stroke-width:232.385"
+     id="rect2"
+     width="960"
+     height="960"
+     x="0"
+     y="-960"
+     inkscape:label="background" />
+  <path
+     d="M 480,-88 Q 342,-88 239.5,-179.5 137,-271 122,-408 h 82 q 14,104 92.5,172 78.5,68 183.5,68 117,0 198.5,-81.5 Q 760,-331 760,-448 760,-565 678.5,-646.5 597,-728 480,-728 q -69,0 -129,32 -60,32 -101,88 h 110 v 80 H 120 v -240 h 80 v 94 q 51,-64 124.5,-99 73.5,-35 155.5,-35 75,0 140.5,28.5 65.5,28.5 114,77 48.5,48.5 77,114 28.5,65.5 28.5,140.5 0,75 -28.5,140.5 -28.5,65.5 -77,114 -48.5,48.5 -114,77 Q 555,-88 480,-88 Z M 592,-280 440,-432 v -216 h 80 v 184 l 128,128 z"
+     id="path1"
+     style="fill:#8a7454;fill-opacity:1"
+     inkscape:label="backdrop" />
+  <path
+     d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"
+     id="path2"
+     style="fill:#f9edc9;fill-opacity:1"
+     inkscape:label="foreground" />
+</svg>
