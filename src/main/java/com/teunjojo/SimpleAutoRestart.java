@@ -38,9 +38,9 @@ public final class SimpleAutoRestart extends JavaPlugin {
         // Check for updates
         new UpdateChecker(this).getVersion((version) -> {
             version = version.replaceFirst("v", "");
-            if (!this.getPluginMeta().getVersion().equals(version)) {
+            if (!this.getDescription().getVersion().equals(version)) {
                 getLogger().warning("A new version of SimpleAutoRestart is available: v" + version
-                        + " (Current version: v" + this.getPluginMeta().getVersion() + ")");
+                        + " (Current version: v" + this.getDescription().getVersion() + ")");
             }
         });
 
