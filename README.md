@@ -25,7 +25,7 @@ A Simple plugin to automatically restart your server at scheduled times with cus
 - Customizable warning messages and titles (supports [MiniMessage](https://docs.advntr.dev/minimessage/) and legacy formatting).
 - Configurable restart command(s) to fit your setup.
 - Real-time based (not tick-based) scheduling for better accuracy.
-- Supports all versions of from 1.8.8+
+- Supports all versions of from 1.8.7+
 - Open Source!
 
 ## Installation
