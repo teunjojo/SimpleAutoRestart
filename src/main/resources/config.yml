@@ -1,7 +1,7 @@
 # The hour and minute when the server should restart (24 hour format)
-# Format: Day;Hour;Minute
+# Format: Day;Hour:Minute
 # Day can be: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, or Daily
-# Example: "Daily;03;00" for every day at 3 AM
+# Example: "Daily;03:00" for every day at 3 AM
 restartTime:
   - "Daily;03:00"
 
@@ -37,3 +37,4 @@ subtitles:
 # The commands that will be executed at restart time
 commands:
   - "restart"
+
