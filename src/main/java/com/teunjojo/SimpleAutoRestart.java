@@ -110,6 +110,16 @@ public final class SimpleAutoRestart extends JavaPlugin {
             return null;
         }
 
+        for (String restartTime : this.restartTimes) {
+            // Check if using old format (HH:MM)
+            if (restartTime.matches("^([01]?\\d|2[0-3]):([0-5]?\\d)$")) {
+                // Convert to new format (Day;HH:MM)
+                String convertedTime = "Daily;" + restartTime;
+                // Update the restart time in the list
+                this.restartTimes.set(this.restartTimes.indexOf(restartTime), convertedTime);
+            }
+        }
+
         // Check if the messages are in the old format
         if (config.getString("messages.now") != null) {
             // Convert the old format to the new format
