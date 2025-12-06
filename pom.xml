@@ -92,6 +92,14 @@
               <pattern>org.bstats</pattern>
               <shadedPattern>com.teunjojo.bstats</shadedPattern>
             </relocation>
+            <relocation>
+              <pattern>net.kyori</pattern>
+              <shadedPattern>com.teunjojo.shaded.kyori</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.google.gson</pattern>
+              <shadedPattern>com.teunjojo.shaded.gson</shadedPattern>
+            </relocation>
           </relocations>
         </configuration>
         <executions>
