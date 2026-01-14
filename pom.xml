@@ -49,18 +49,18 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-text-minimessage</artifactId>
-      <version>4.25.0</version>
+      <version>4.26.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-text-serializer-plain</artifactId>
-      <version>4.25.0</version>
+      <version>4.26.1</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-api</artifactId>
-      <version>4.25.0</version>
+      <version>4.26.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
