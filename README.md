@@ -14,8 +14,8 @@
 ![License](https://img.shields.io/github/license/teunjojo/simpleautorestart?style=for-the-badge)
 
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact-minimal.svg)](https://bukkit.org/)
-[![spigot](https://badges.penpow.dev/badges/supported/spigot/compact-minimal.svg)](https://spigot.org/)
-[![papermc](https://badges.penpow.dev/badges/supported/paper/compact-minimal.svg)](https://bukkit.org/)
+[![spigot](https://badges.penpow.dev/badges/supported/spigot/compact-minimal.svg)](https://spigotmc.org/)
+[![papermc](https://badges.penpow.dev/badges/supported/paper/compact-minimal.svg)](https://papermc.io/)
 
 A Simple plugin to automatically restart your server at scheduled times with customizable warnings.
 
