@@ -74,8 +74,10 @@ public final class SimpleAutoRestart extends JavaPlugin {
 
         // Schedule the restarts
         for (String restartTime : this.restartTimes) {
-            if (!restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands)) {
-                getLogger().severe("Failed to schedule the restart for: " + restartTime);
+            try {
+                restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands);
+            } catch (Exception e) {
+                getLogger().severe("Failed to schedule the restart for: " + restartTime + ". Due to" + e.getMessage());
             }
         }
     }
