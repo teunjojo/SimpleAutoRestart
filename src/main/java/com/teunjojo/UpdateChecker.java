@@ -1,12 +1,12 @@
 package com.teunjojo;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
+
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class UpdateChecker {
 
@@ -20,8 +20,7 @@ public class UpdateChecker {
         new Thread(() -> {
             // Get the latest release from the GitHub API
             try (InputStream is = new URL("https://api.github.com/repos/teunjojo/SimpleAutoRestart/releases/latest")
-                    .openStream();
-                    Scanner scanner = new Scanner(is)) {
+                    .openStream(); Scanner scanner = new Scanner(is)) {
                 // Get tag_name from the JSON response
                 if (scanner.hasNext()) {
 

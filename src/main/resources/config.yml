@@ -7,7 +7,6 @@ restartTime:
 
 # Add multiple times by adding a new line like: - '12:00'
 
-
 #
 # Messages
 #
@@ -37,4 +36,3 @@ subtitles:
 # The commands that will be executed at restart time
 commands:
   - "restart"
-

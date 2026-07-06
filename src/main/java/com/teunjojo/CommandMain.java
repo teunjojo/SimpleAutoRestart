@@ -1,11 +1,5 @@
 package com.teunjojo;
 
-import org.bukkit.command.*;
-import org.bukkit.entity.Player;
-
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +7,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class CommandMain implements TabExecutor {
 
@@ -45,8 +47,9 @@ public class CommandMain implements TabExecutor {
             case "status":
                 return commandStatus(sender);
             case "set":
-                if (!commandSetRestart(sender, args))
+                if (!commandSetRestart(sender, args)) {
                     sender.sendMessage(mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
+                }
 
                 return true;
             case "reload":
