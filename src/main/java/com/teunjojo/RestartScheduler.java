@@ -18,7 +18,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class RestartScheduler {
+
     private final SimpleAutoRestart plugin;
+
     private final Utility util = new Utility();
     private final MiniMessage mm = MiniMessage.miniMessage();
     private Set<ZonedDateTime> scheduledRestarts = new HashSet<ZonedDateTime>();
@@ -46,8 +48,9 @@ public class RestartScheduler {
 
         // Schedule the restart messages
         for (Long delay : _messages.keySet()) {
-            if (delay > initialDelayInSeconds)
+            if (delay > initialDelayInSeconds) {
                 continue;
+            }
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -72,8 +75,9 @@ public class RestartScheduler {
 
         // Schedule the restart title
         for (Long delay : _titles.keySet()) {
-            if (delay > initialDelayInSeconds)
+            if (delay > initialDelayInSeconds) {
                 continue;
+            }
             timer.schedule(new TimerTask() {
 
                 @Override
@@ -110,9 +114,11 @@ public class RestartScheduler {
             public void run() {
                 if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
                     _commands.forEach(command -> {
-                        Bukkit.getScheduler().runTask(plugin, () -> {
+                        Runnable task = () -> {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                        });
+                        };
+
+                        util.runTask(task);
                     });
                 }
                 scheduledRestarts.remove(nextRestart);

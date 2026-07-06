@@ -1,6 +1,22 @@
 package com.teunjojo;
 
+import org.bukkit.Bukkit;
+
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
 public class Utility {
+
+    private static boolean isFolia() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    private static final MiniMessage mm = MiniMessage.miniMessage();
+
     public int weekDayToInt(String day) {
         switch (day) {
             case "Daily":
@@ -21,6 +37,14 @@ public class Utility {
                 return 7;
             default:
                 return -1;
+        }
+    }
+
+    public void runTask(Runnable task) {
+        if (isFolia()) {
+            Bukkit.getGlobalRegionScheduler().execute(SimpleAutoRestart.getInstance(), task);
+        } else {
+            Bukkit.getScheduler().runTask(SimpleAutoRestart.getInstance(), task);
         }
     }
 }

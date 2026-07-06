@@ -70,6 +70,10 @@ public final class SimpleAutoRestart extends JavaPlugin {
         }
     }
 
+    public static SimpleAutoRestart getInstance() {
+        return getPlugin(SimpleAutoRestart.class);
+    }
+
     public void scheduleRestarts() {
 
         // Schedule the restarts
