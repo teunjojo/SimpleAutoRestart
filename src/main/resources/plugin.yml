@@ -13,3 +13,7 @@ commands:
     usage: "Usage: /<command> set <hour> <minute> [day]"
     permission: simpleautorestart.use
     default: op
+permissions:
+  simpleautorestart.use:
+    description: Permission to use SimpleAutoRestart
+    default: op
