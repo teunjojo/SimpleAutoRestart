@@ -15,7 +15,8 @@
 
 [![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact-minimal.svg)](https://bukkit.org/)
 [![spigot](https://badges.penpow.dev/badges/supported/spigot/compact-minimal.svg)](https://spigotmc.org/)
-[![papermc](https://badges.penpow.dev/badges/supported/paper/compact-minimal.svg)](https://papermc.io/)
+[![paper](https://badges.penpow.dev/badges/supported/paper/compact-minimal.svg)](https://papermc.io/software/paper)
+[![paper](https://badges.penpow.dev/badges/supported/folia/compact-minimal.svg)](https://papermc.io/software/folia)
 
 A Simple plugin to automatically restart your server at scheduled times with customizable warnings.
 
@@ -25,12 +26,13 @@ A Simple plugin to automatically restart your server at scheduled times with cus
 - Customizable warning messages and titles (supports [MiniMessage](https://docs.advntr.dev/minimessage/) and legacy formatting).
 - Configurable restart command(s) to fit your setup.
 - Real-time based (not tick-based) scheduling for better accuracy.
-- Supports all versions of from 1.8.7+
+- Supports **all** versions of Bukkit and Spigot, Paper
+- Supports **[Folia](https://papermc.io/software/folia)**
 - Open Source!
 
 ## Installation
 
-1. Configure your server restart script in `spigot.yml` (See [PaperMC Docs](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script))
+1. Configure your server restart script in `spigot.yml`, See [PaperMC Docs](https://docs.papermc.io/paper/reference/spigot-configuration/#settings_restart_script) (only relevant for Spigot/Paper version 1.8.7 or higher)
 2. Download the latest `SimpleAutoRestart-<version>.jar`.
 3. Place the JAR file into your server's `plugins/` folder.
 4. Start or restart the server.
