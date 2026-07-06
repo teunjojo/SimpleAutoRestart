@@ -36,3 +36,4 @@ subtitles:
 # The commands that will be executed at restart time
 commands:
   - "restart"
+  - "stop"
