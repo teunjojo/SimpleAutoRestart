@@ -13,10 +13,10 @@
 
 ![License](https://img.shields.io/github/license/teunjojo/simpleautorestart?style=for-the-badge)
 
-[![bukkit](https://badges.penpow.dev/badges/supported/bukkit/compact-minimal.svg)](https://bukkit.org/)
-[![spigot](https://badges.penpow.dev/badges/supported/spigot/compact-minimal.svg)](https://spigotmc.org/)
-[![paper](https://badges.penpow.dev/badges/supported/paper/compact-minimal.svg)](https://papermc.io/software/paper)
-[![paper](https://badges.penpow.dev/badges/supported/folia/compact-minimal.svg)](https://papermc.io/software/folia)
+[![bukkit](https://badges.penpow.dev/badges/supported/bukkit/cozy-minimal.svg)](https://bukkit.org/)
+[![spigot](https://badges.penpow.dev/badges/supported/spigot/cozy-minimal.svg)](https://spigotmc.org/)
+[![paper](https://badges.penpow.dev/badges/supported/paper/cozy-minimal.svg)](https://papermc.io/software/paper)
+[![paper](https://badges.penpow.dev/badges/supported/folia/cozy-minimal.svg)](https://papermc.io/software/folia)
 
 A Simple plugin to automatically restart your server at scheduled times with customizable warnings.
 
