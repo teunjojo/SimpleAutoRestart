@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 
@@ -37,7 +38,7 @@ public class RestartScheduler {
 
         // Check if a restart is already scheduled for this time
         if (isRestartScheduled(nextRestart)) {
-            plugin.getLogger().warning("A restart is already scheduled for: " + _restartTime);
+            plugin.getLogger().log(Level.WARNING, "A restart is already scheduled for: {0}", _restartTime);
             return false;
         }
 
@@ -125,7 +126,7 @@ public class RestartScheduler {
         scheduledRestarts.add(nextRestart);
         canceledRestarts.remove(nextRestart);
 
-        plugin.getLogger().info("Reboot set for: " + _restartTime);
+        plugin.getLogger().log(Level.INFO, "Reboot set for: {0}", _restartTime);
         return true;
     }
 
@@ -169,7 +170,7 @@ public class RestartScheduler {
 
     public ZonedDateTime getNextRestart() {
         // Find the earliest scheduled restart
-        ZonedDateTime nextRestart = null;
+        ZonedDateTime nextRestart;
         ZonedDateTime nextScheduledRestart = null;
         for (ZonedDateTime scheduledRestart : scheduledRestarts) {
             if (nextScheduledRestart == null || scheduledRestart.isBefore(nextScheduledRestart)) {

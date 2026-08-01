@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,7 +35,7 @@ public class UpdateChecker {
                     consumer.accept(tagName);
                 }
             } catch (IOException exception) {
-                this.plugin.getLogger().info("Cannot look for updates: " + exception.getMessage());
+                this.plugin.getLogger().log(Level.INFO, "Cannot look for updates: {0}", exception.getMessage());
             }
         }).start();
     }

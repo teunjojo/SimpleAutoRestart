@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -42,14 +43,13 @@ public final class SimpleAutoRestart extends JavaPlugin {
 
         // bStats metrics
         int pluginId = 17760;
-        new Metrics(this, pluginId);
+        Metrics metrics = new Metrics(this, pluginId);
 
         // Check for updates
         new UpdateChecker(this).getVersion((version) -> {
             version = version.replaceFirst("v", "");
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning("A new version of SimpleAutoRestart is available: v" + version
-                        + " (Current version: v" + this.getDescription().getVersion() + ")");
+                getLogger().log(Level.WARNING, "A new version of SimpleAutoRestart is available: v{0} (Current version: v{1})", new Object[]{version, this.getDescription().getVersion()});
             }
         });
 
@@ -81,7 +81,7 @@ public final class SimpleAutoRestart extends JavaPlugin {
             try {
                 restartScheduler.scheduleRestart(restartTime, messages, titles, subtitles, commands);
             } catch (Exception e) {
-                getLogger().severe("Failed to schedule the restart for: " + restartTime + ". Due to" + e.getMessage());
+                getLogger().log(Level.SEVERE, "Failed to schedule the restart for: {0}. Due to{1}", new Object[]{restartTime, e.getMessage()});
             }
         }
     }
@@ -154,19 +154,19 @@ public final class SimpleAutoRestart extends JavaPlugin {
         // Load the messages from the config
         if (config.getConfigurationSection("messages") != null) {
             for (String key : config.getConfigurationSection("messages").getKeys(false)) {
-                this.messages.put(Long.parseLong(key), config.getString("messages." + key));
+                this.messages.put(Long.valueOf(key), config.getString("messages." + key));
             }
         }
         // Load the titles from the config
         if (config.getConfigurationSection("titles") != null) {
             for (String key : config.getConfigurationSection("titles").getKeys(false)) {
-                this.titles.put(Long.parseLong(key), config.getString("titles." + key));
+                this.titles.put(Long.valueOf(key), config.getString("titles." + key));
             }
         }
         // Load the subtitles from the config
         if (config.getConfigurationSection("subtitles") != null) {
             for (String key : config.getConfigurationSection("subtitles").getKeys(false)) {
-                this.subtitles.put(Long.parseLong(key), config.getString("subtitles." + key));
+                this.subtitles.put(Long.valueOf(key), config.getString("subtitles." + key));
             }
         }
 
