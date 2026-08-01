@@ -1,6 +1,5 @@
 package com.teunjojo;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
@@ -34,9 +33,10 @@ public class UpdateChecker {
                     // Return the tag name
                     consumer.accept(tagName);
                 }
-            } catch (IOException exception) {
-                this.plugin.getLogger().log(Level.INFO, "Cannot look for updates: {0}", exception.getMessage());
+            } catch (Exception exception) {
+                this.plugin.getLogger().log(Level.SEVERE, "Cannot look for updates: {0}", exception.getMessage());
             }
-        }).start();
+        }
+        ).start();
     }
 }
