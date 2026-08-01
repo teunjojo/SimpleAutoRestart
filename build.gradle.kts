@@ -1,8 +1,10 @@
 plugins {
     `java-library`
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 repositories {
+    mavenCentral()
     maven {
         url = uri("https://repo.papermc.io/repository/maven-public/")
     }
@@ -16,7 +18,7 @@ dependencies {
     compileOnly(libs.io.papermc.paper.paper.api)
     api(libs.net.kyori.adventure.text.minimessage)
     api(libs.net.kyori.adventure.text.serializer.legacy)
-    api(libs.org.bstats.bstats.bukkit)
+    implementation(libs.org.bstats.bstats.bukkit)
 }
 
 group = "com.teunjojo"
@@ -35,4 +37,15 @@ tasks {
 
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+    configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+
+    dependencies {
+        exclude { it.moduleGroup != "org.bstats" }
+    }
+
+    relocate("org.bstats", project.group.toString())
 }
