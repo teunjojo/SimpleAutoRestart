@@ -9,7 +9,7 @@
 </div>
 
 [![GitHub Release](https://img.shields.io/github/v/release/teunjojo/SimpleAutoRestart?style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/releases)
-[![Build SimpleAutoRestart]([https://img.shields.io/github/actions/workflow/status/teunjojo/SimpleAutoRestart/maven.yml](https://img.shields.io/github/actions/workflow/status/teunjojo/SimpleAutoRestart/gradle.yml?label=dev%20build&style=for-the-badge)?label=dev%20build&style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/actions/workflows/gradle.yml)
+[![Build SimpleAutoRestart](https://img.shields.io/github/actions/workflow/status/teunjojo/SimpleAutoRestart/gradle.yml?label=dev%20build&style=for-the-badge)](https://github.com/teunjojo/SimpleAutoRestart/actions/workflows/gradle.yml)
 
 ![License](https://img.shields.io/github/license/teunjojo/simpleautorestart?style=for-the-badge)
 
