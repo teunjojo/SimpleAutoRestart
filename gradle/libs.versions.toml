@@ -3,9 +3,9 @@
 
 [versions]
 io-papermc-paper-paper-api = "1.21.8-R0.1-SNAPSHOT"
-net-kyori-adventure-text-minimessage = "4.17.0"
-net-kyori-adventure-text-serializer-legacy = "4.17.0"
-org-bstats-bstats-bukkit = "3.0.2"
+net-kyori-adventure-text-minimessage = "5.2.0"
+net-kyori-adventure-text-serializer-legacy = "5.2.0"
+org-bstats-bstats-bukkit = "3.2.1"
 
 [libraries]
 io-papermc-paper-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-paper-api" }
