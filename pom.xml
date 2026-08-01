@@ -36,30 +36,18 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Adventure -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.26.1</version>
-        </dependency>
-
+        <!-- Adventure MiniMessage -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.26.1</version>
+            <version>4.17.0</version>
         </dependency>
 
+        <!-- Adventure legacy serializer -->
         <dependency>
             <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-plain</artifactId>
-            <version>4.26.1</version>
-        </dependency>
-
-        <!-- Only include this if you're actually using BukkitAudiences -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.4.1</version>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
+            <version>4.17.0</version>
         </dependency>
 
         <!-- bStats -->
@@ -69,12 +57,6 @@
             <version>3.0.2</version>
         </dependency>
 
-        <!-- Gson -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.11.0</version>
-        </dependency>
 
     </dependencies>
 

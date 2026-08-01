@@ -13,14 +13,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class CommandMain implements TabExecutor {
 
-    private SimpleAutoRestart plugin;
+    private final SimpleAutoRestart plugin;
     private final RestartScheduler restartScheduler;
-    private final Utility util = new Utility();
     private final MiniMessage mm = MiniMessage.miniMessage();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE - HH:mm");
@@ -31,9 +29,7 @@ public class CommandMain implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender _sender, Command command, String label, String[] args) {
-
-        Audience sender = plugin.adventure().sender(_sender);
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (args.length == 0) {
             return false;
@@ -48,7 +44,7 @@ public class CommandMain implements TabExecutor {
                 return commandStatus(sender);
             case "set":
                 if (!commandSetRestart(sender, args)) {
-                    sender.sendMessage(mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
+                    plugin.sendMessage(sender, mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
                 }
 
                 return true;
@@ -91,11 +87,11 @@ public class CommandMain implements TabExecutor {
         return null;
     }
 
-    private boolean commandCancelRestart(Audience sender) {
+    private boolean commandCancelRestart(CommandSender sender) {
         ZonedDateTime restart = restartScheduler.getNextRestart();
 
         if (restartScheduler.isRestartCanceled(restart)) {
-            sender.sendMessage(mm.deserialize("<red>Next auto restart is already canceled"));
+            plugin.sendMessage(sender, mm.deserialize("<red>Next auto restart is already canceled"));
             return true;
         }
 
@@ -103,15 +99,15 @@ public class CommandMain implements TabExecutor {
 
         restartScheduler.cancelRestart(restart);
 
-        sender.sendMessage(mm.deserialize("Restart for " + formattedString + " is canceled"));
+        plugin.sendMessage(sender, mm.deserialize("Restart for " + formattedString + " is canceled"));
         return true;
     }
 
-    private boolean commandResumeRestart(Audience sender) {
+    private boolean commandResumeRestart(CommandSender sender) {
         ZonedDateTime restart = restartScheduler.getNextRestart();
 
         if (!restartScheduler.isRestartCanceled(restart)) {
-            sender.sendMessage(mm.deserialize("<red>Next auto restart is not canceled"));
+            plugin.sendMessage(sender, mm.deserialize("<red>Next auto restart is not canceled"));
             return true;
         }
 
@@ -119,18 +115,18 @@ public class CommandMain implements TabExecutor {
 
         restartScheduler.resumeRestart(restart);
 
-        sender.sendMessage(mm.deserialize("Restart for " + formattedString + " is resumed"));
+        plugin.sendMessage(sender, mm.deserialize("Restart for " + formattedString + " is resumed"));
         return true;
     }
 
-    private boolean commandStatus(Audience sender) {
+    private boolean commandStatus(CommandSender sender) {
 
         Set<ZonedDateTime> allRestarts = new HashSet<>();
         allRestarts.addAll(restartScheduler.getScheduledRestarts());
         allRestarts.addAll(restartScheduler.getCanceledRestarts());
 
         if (allRestarts.isEmpty()) {
-            sender.sendMessage(mm.deserialize("No restarts are scheduled."));
+            plugin.sendMessage(sender, mm.deserialize("No restarts are scheduled."));
             return true;
         }
 
@@ -140,17 +136,17 @@ public class CommandMain implements TabExecutor {
 
         boolean scheduledReached = false;
 
-        sender.sendMessage(mm.deserialize("Scheduled Restarts:"));
+        plugin.sendMessage(sender, mm.deserialize("Scheduled Restarts:"));
         for (ZonedDateTime restart : sortedRestarts) {
             String formattedString = restart.format(formatter);
             if (restartScheduler.isRestartCanceled(restart)) {
-                sender.sendMessage(mm.deserialize("<strikethrough>" + formattedString + " (Canceled)"));
+                plugin.sendMessage(sender, mm.deserialize("<strikethrough>" + formattedString + " (Canceled)"));
             } else {
                 if (scheduledReached) {
-                    sender.sendMessage(mm.deserialize("<gray><italic>" + formattedString + " (Scheduled)"));
+                    plugin.sendMessage(sender, mm.deserialize("<gray><italic>" + formattedString + " (Scheduled)"));
                     continue;
                 }
-                sender.sendMessage(mm.deserialize("<b>" + formattedString + " (Scheduled)"));
+                plugin.sendMessage(sender, mm.deserialize("<b>" + formattedString + " (Scheduled)"));
                 scheduledReached = true;
 
             }
@@ -159,7 +155,7 @@ public class CommandMain implements TabExecutor {
         return true;
     }
 
-    private boolean commandSetRestart(Audience sender, String[] args) {
+    private boolean commandSetRestart(CommandSender sender, String[] args) {
 
         // Remove the first argument
         String[] restartArgs = Arrays.copyOfRange(args, 1, args.length);
@@ -171,7 +167,7 @@ public class CommandMain implements TabExecutor {
         }
 
         if (restartScheduler.isRestartScheduled(_restartTime)) {
-            sender.sendMessage(mm.deserialize("<red>A restart is already scheduled for this time!"));
+            plugin.sendMessage(sender, mm.deserialize("<red>A restart is already scheduled for this time!"));
             return false;
         }
 
@@ -179,21 +175,21 @@ public class CommandMain implements TabExecutor {
                 plugin.getSubtitles(), plugin.getCommands());
 
         if (!success) {
-            sender.sendMessage(mm.deserialize("<red>Invalid time format!"));
+            plugin.sendMessage(sender, mm.deserialize("<red>Invalid time format!"));
             return false;
         }
 
-        sender.sendMessage(mm.deserialize("Auto restart is scheduled at " + _restartTime));
-        sender.sendMessage(mm.deserialize(
+        plugin.sendMessage(sender, mm.deserialize("Auto restart is scheduled at " + _restartTime));
+        plugin.sendMessage(sender, mm.deserialize(
                 "<yellow>Note that this scheduled time is not saved and will be reset on server restart."));
 
         return true;
 
     }
 
-    private boolean commandReload(Audience sender) {
+    private boolean commandReload(CommandSender sender) {
         plugin.reload();
-        sender.sendMessage(mm.deserialize("Configuration reloaded successfully."));
+        plugin.sendMessage(sender, mm.deserialize("Configuration reloaded successfully."));
         return true;
     }
 
@@ -227,13 +223,13 @@ public class CommandMain implements TabExecutor {
         return completions;
     }
 
-    private String buildRestartTime(Audience sender, String[] args) {
+    private String buildRestartTime(CommandSender sender, String[] args) {
         String day = "Daily"; // Default day
-        int hour = -1;
-        int minute = -1;
+        int hour;
+        int minute;
 
         if (args.length < 2) {
-            sender.sendMessage(mm.deserialize("<red>Not enough arguments!"));
+            plugin.sendMessage(sender, mm.deserialize("<red>Not enough arguments!"));
             return null;
         }
 
@@ -245,12 +241,12 @@ public class CommandMain implements TabExecutor {
             hour = Integer.parseInt(args[0]);
             minute = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(mm.deserialize("<red>Hour and minute must be numbers!"));
+            plugin.sendMessage(sender, mm.deserialize("<red>Hour and minute must be numbers!"));
             return null;
         }
 
-        if (util.weekDayToInt(day) == -1) {
-            sender.sendMessage(mm.deserialize(
+        if (plugin.weekDayToInt(day) == -1) {
+            plugin.sendMessage(sender, mm.deserialize(
                     "<red>Invalid day! Use Daily, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday."));
             return null;
         }

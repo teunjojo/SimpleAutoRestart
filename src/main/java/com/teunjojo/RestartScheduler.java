@@ -1,13 +1,5 @@
 package com.teunjojo;
 
-import org.bukkit.Bukkit;
-
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.title.Title;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -17,14 +9,20 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.bukkit.Bukkit;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.Title;
+
 public class RestartScheduler {
 
     private final SimpleAutoRestart plugin;
 
-    private final Utility util = new Utility();
     private final MiniMessage mm = MiniMessage.miniMessage();
-    private Set<ZonedDateTime> scheduledRestarts = new HashSet<ZonedDateTime>();
-    private Set<ZonedDateTime> canceledRestarts = new HashSet<ZonedDateTime>();
+    final private Set<ZonedDateTime> scheduledRestarts = new HashSet<>();
+    final private Set<ZonedDateTime> canceledRestarts = new HashSet<>();
     private Timer timer = new Timer(true);
 
     public RestartScheduler(SimpleAutoRestart plugin) {
@@ -55,8 +53,6 @@ public class RestartScheduler {
                 @Override
                 public void run() {
                     if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
-                        Audience adventureAudience = plugin.adventure().all();
-
                         String messageRaw = _messages.get(delay);
 
                         // Parse the message using MiniMessage and convert legacy formatting
@@ -67,7 +63,7 @@ public class RestartScheduler {
 
                         Component messageFinal = mm.deserialize(serializedMessage);
 
-                        adventureAudience.sendMessage(messageFinal);
+                        plugin.broadcast(messageFinal);
                     }
                 }
             }, (initialDelayInSeconds - delay) * 1000);
@@ -83,7 +79,6 @@ public class RestartScheduler {
                 @Override
                 public void run() {
                     if (getNextRestart() == nextRestart && !isRestartCanceled(nextRestart)) {
-                        Audience adventurePlayers = plugin.adventure().players();
 
                         String titleRaw = _titles.get(delay);
                         String subtitleRaw = _subtitles.get(delay);
@@ -102,7 +97,7 @@ public class RestartScheduler {
 
                         Title title = Title.title(titleFinal, subtitleFinal);
 
-                        adventurePlayers.showTitle(title);
+                        plugin.showTitle(title);
                     }
                 }
             }, (initialDelayInSeconds - delay) * 1000);
@@ -118,7 +113,7 @@ public class RestartScheduler {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                         };
 
-                        util.runTask(task);
+                        plugin.runTask(task);
                     });
                 }
                 scheduledRestarts.remove(nextRestart);
@@ -210,7 +205,7 @@ public class RestartScheduler {
         ZonedDateTime now = ZonedDateTime.now();
 
         int currentDayOfWeek = now.getDayOfWeek().getValue();
-        int targetDayOfWeek = util.weekDayToInt(dayPart);
+        int targetDayOfWeek = plugin.weekDayToInt(dayPart);
 
         ZonedDateTime nextRestart = now.withHour(hour).withMinute(minute);
 

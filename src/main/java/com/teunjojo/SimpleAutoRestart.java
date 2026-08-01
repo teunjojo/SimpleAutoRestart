@@ -6,23 +6,32 @@ import java.util.List;
 import java.util.Map;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import static org.bukkit.Bukkit.getGlobalRegionScheduler;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.Title;
 
 public final class SimpleAutoRestart extends JavaPlugin {
 
     SimpleAutoRestart plugin = this;
 
-    private BukkitAudiences adventure;
+    private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.builder()
+            .character('§')
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
 
     private RestartScheduler restartScheduler;
 
     private List<String> restartTimes = new ArrayList<>();
-    private Map<Long, String> messages = new HashMap<>();
-    private Map<Long, String> titles = new HashMap<>();
-    private Map<Long, String> subtitles = new HashMap<>();
+    private final Map<Long, String> messages = new HashMap<>();
+    private final Map<Long, String> titles = new HashMap<>();
+    private final Map<Long, String> subtitles = new HashMap<>();
     private List<String> commands = new ArrayList<>();
 
     /**
@@ -44,7 +53,6 @@ public final class SimpleAutoRestart extends JavaPlugin {
             }
         });
 
-        this.adventure = BukkitAudiences.create(this);
         this.restartScheduler = new RestartScheduler(this);
 
         // Register SimpleAutoRestart commands
@@ -60,14 +68,6 @@ public final class SimpleAutoRestart extends JavaPlugin {
         }
 
         scheduleRestarts();
-    }
-
-    @Override
-    public void onDisable() {
-        if (this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
     }
 
     public static SimpleAutoRestart getInstance() {
@@ -186,13 +186,6 @@ public final class SimpleAutoRestart extends JavaPlugin {
         return config;
     }
 
-    public BukkitAudiences adventure() {
-        if (this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
-    }
-
     public RestartScheduler getRestartScheduler() {
         return restartScheduler;
     }
@@ -217,4 +210,84 @@ public final class SimpleAutoRestart extends JavaPlugin {
         return commands;
     }
 
+    private static boolean isFolia() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    private static boolean isPaper() {
+        try {
+            Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    public int weekDayToInt(String day) {
+        switch (day) {
+            case "Daily":
+                return 0;
+            case "Monday":
+                return 1;
+            case "Tuesday":
+                return 2;
+            case "Wednesday":
+                return 3;
+            case "Thursday":
+                return 4;
+            case "Friday":
+                return 5;
+            case "Saturday":
+                return 6;
+            case "Sunday":
+                return 7;
+            default:
+                return -1;
+        }
+    }
+
+    public void runTask(Runnable task) {
+        if (isFolia()) {
+            getGlobalRegionScheduler().execute(SimpleAutoRestart.getInstance(), task);
+        } else {
+            Bukkit.getScheduler().runTask(SimpleAutoRestart.getInstance(), task);
+        }
+    }
+
+    public void sendMessage(CommandSender target, Component component) {
+        if (isPaper()) {
+            target.sendMessage(component);
+        } else {
+            target.sendMessage(LEGACY_SERIALIZER.serialize(component));
+        }
+    }
+
+    public void broadcast(Component component) {
+        if (isPaper()) {
+            Bukkit.broadcast(component);
+        } else {
+            Bukkit.broadcastMessage(LEGACY_SERIALIZER.serialize(component));
+        }
+    }
+
+    public void showTitle(Title title) {
+        if (isPaper()) {
+            Bukkit.getServer().showTitle(title);
+        } else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                try {
+                    player.sendTitle(
+                            LEGACY_SERIALIZER.serialize(title.title()),
+                            LEGACY_SERIALIZER.serialize(title.subtitle())
+                    );
+                } catch (NoSuchMethodError e) {
+                }
+            });
+        }
+    }
 }
