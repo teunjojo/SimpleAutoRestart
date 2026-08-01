@@ -1,11 +1,11 @@
 main: com.teunjojo.SimpleAutoRestart
-name: ${project.name}
-version: ${project.version}
-description: ${project.description}
+name: SimpleAutoRestart
+version: ${pluginVersion}
+description: Really simple Spigot plugin that automatically restarts your server.
 api-version: 1.13
 folia-supported: true
 author: teunjojo
-website: ${project.url}
+website: https://www.teunjojo.com
 commands:
   simpleautorestart:
     description: Main SimpleAutoRestart command
