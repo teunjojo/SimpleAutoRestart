@@ -22,7 +22,7 @@ dependencies {
 }
 
 group = "com.teunjojo"
-version = "2.11.5-dev"
+version = "2.11.6-dev"
 description = "SimpleAutoRestart"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
