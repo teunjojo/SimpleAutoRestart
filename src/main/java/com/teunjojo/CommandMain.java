@@ -87,6 +87,7 @@ public class CommandMain implements TabExecutor {
                     completions.addAll(tabCompleteDate(args, 1));
                     break;
                 case "in":
+                    completions.addAll(tabCompleteDuration(args, 1));
                     break;
                 case "reload":
                     break;
@@ -246,6 +247,36 @@ public class CommandMain implements TabExecutor {
             default:
                 break;
         }
+        return completions;
+    }
+
+    private ArrayList<String> tabCompleteDuration(String[] args, int startIndex) {
+        ArrayList<String> completions = new ArrayList<>();
+
+        String input = String.join(" ", args).trim().toLowerCase();
+
+        boolean hasDays = input.matches(".*\\d+d.*");
+        boolean hasHours = input.matches(".*\\d+h.*");
+        boolean hasMinutes = input.matches(".*\\d+m.*");
+
+        if (!hasDays) {
+            for (int i = 1; i <= 7; i++) {
+                completions.add(String.format("%02dd", i));
+            }
+        }
+
+        if (!hasHours) {
+            for (int i = 1; i < 24; i++) {
+                completions.add(String.format("%02dh", i));
+            }
+        }
+
+        if (!hasMinutes) {
+            for (int i = 1; i < 60; i++) {
+                completions.add(String.format("%02dm", i));
+            }
+        }
+
         return completions;
     }
 
