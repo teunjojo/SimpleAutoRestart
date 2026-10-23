@@ -1,12 +1,16 @@
 package com.teunjojo;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -36,22 +40,33 @@ public class CommandMain implements TabExecutor {
         }
 
         switch (args[0]) {
-            case "cancel":
+            case "cancel" -> {
                 return commandCancelRestart(sender);
-            case "resume":
+            }
+            case "resume" -> {
                 return commandResumeRestart(sender);
-            case "status":
+            }
+            case "status" -> {
                 return commandStatus(sender);
-            case "set":
+            }
+            case "set" -> {
                 if (!commandSetRestart(sender, args)) {
                     plugin.sendMessage(sender, mm.deserialize("Usage: /" + label + " set <hour> <minute> [day]"));
                 }
+                return true;
+            }
+            case "in" -> {
+                if (!commandRestartIn(sender, args)) {
+                    plugin.sendMessage(sender, mm.deserialize("Usage: /" + label + " in <duration>"));
+                }
 
                 return true;
-            case "reload":
+            }
+            case "reload" -> {
                 return commandReload(sender);
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         return false;
     }
@@ -71,6 +86,8 @@ public class CommandMain implements TabExecutor {
                 case "set":
                     completions.addAll(tabCompleteDate(args, 1));
                     break;
+                case "in":
+                    break;
                 case "reload":
                     break;
                 default:
@@ -78,6 +95,7 @@ public class CommandMain implements TabExecutor {
                     completions.add("resume");
                     completions.add("status");
                     completions.add("set");
+                    completions.add("in");
                     completions.add("reload");
                     break;
             }
@@ -160,31 +178,39 @@ public class CommandMain implements TabExecutor {
         // Remove the first argument
         String[] restartArgs = Arrays.copyOfRange(args, 1, args.length);
 
-        String _restartTime = buildRestartTime(sender, restartArgs);
+        String _restartTime = buildRestartTimeFromSet(sender, restartArgs);
 
-        if (_restartTime == null) {
-            return false;
-        }
-
-        if (restartScheduler.isRestartScheduled(_restartTime)) {
-            plugin.sendMessage(sender, mm.deserialize("<red>A restart is already scheduled for this time!"));
-            return false;
-        }
-
-        boolean success = restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
-                plugin.getSubtitles(), plugin.getCommands());
-
-        if (!success) {
-            plugin.sendMessage(sender, mm.deserialize("<red>Invalid time format!"));
+        try {
+            scheduleRestart(_restartTime);
+        } catch (Exception e) {
+            plugin.sendMessage(sender, mm.deserialize(String.format("<red>%s", e.getMessage())));
             return false;
         }
 
         plugin.sendMessage(sender, mm.deserialize("Auto restart is scheduled at " + _restartTime));
         plugin.sendMessage(sender, mm.deserialize(
                 "<yellow>Note that this scheduled time is not saved and will be reset on server restart."));
-
         return true;
+    }
 
+    private boolean commandRestartIn(CommandSender sender, String[] args) {
+
+        // Remove the first argument
+        String[] restartArgs = Arrays.copyOfRange(args, 1, args.length);
+
+        String _restartTime;
+        try {
+            _restartTime = buildRestartTimeFromIn(restartArgs);
+            scheduleRestart(_restartTime);
+        } catch (Exception e) {
+            plugin.sendMessage(sender, mm.deserialize(String.format("<red>%s", e.getMessage())));
+            return false;
+        }
+
+        plugin.sendMessage(sender, mm.deserialize("Auto restart is scheduled at " + _restartTime));
+        plugin.sendMessage(sender, mm.deserialize(
+                "<yellow>Note that this scheduled time is not saved and will be reset on server restart."));
+        return true;
     }
 
     private boolean commandReload(CommandSender sender) {
@@ -223,7 +249,20 @@ public class CommandMain implements TabExecutor {
         return completions;
     }
 
-    private String buildRestartTime(CommandSender sender, String[] args) {
+    private void scheduleRestart(String _restartTime) throws Exception {
+        if (restartScheduler.isRestartScheduled(_restartTime)) {
+            throw new IllegalArgumentException("A restart is already scheduled for this time!");
+        }
+
+        boolean success = restartScheduler.scheduleRestart(_restartTime, plugin.getMessages(), plugin.getTitles(),
+                plugin.getSubtitles(), plugin.getCommands());
+
+        if (!success) {
+            throw new IllegalArgumentException("<red>Invalid time format!");
+        }
+    }
+
+    private String buildRestartTimeFromSet(CommandSender sender, String[] args) {
         String day = "Daily"; // Default day
         int hour;
         int minute;
@@ -253,5 +292,46 @@ public class CommandMain implements TabExecutor {
 
         String _restartTime = day + ";" + String.format("%02d", hour) + ":" + String.format("%02d", minute);
         return _restartTime;
+    }
+
+    private String buildRestartTimeFromIn(String[] args) throws Exception {
+
+        if (args.length < 1) {
+            throw new IllegalArgumentException("Not enough arguments!");
+        }
+
+        Pattern TOKEN = Pattern.compile("(\\d+)\\s*([dhms])");
+        Pattern FULL = Pattern.compile("(?:\\d+\\s*[dhms]\\s*)+");
+
+        ZonedDateTime restartDateTime = ZonedDateTime.now();
+
+        String input = String.join(" ", args).trim().toLowerCase();
+
+        if (!FULL.matcher(input).matches()) {
+            throw new IllegalArgumentException(
+                    "Invalid duration \"" + input + "\". Use a format like 1d 2h 30m.");
+        }
+
+        Duration duration = Duration.ZERO;
+        Matcher matcher = TOKEN.matcher(input);
+
+        while (matcher.find()) {
+            long value = Long.parseLong(matcher.group(1));
+
+            duration = switch (matcher.group(2)) {
+                case "d" ->
+                    duration.plusDays(value);
+                case "h" ->
+                    duration.plusHours(value);
+                case "m" ->
+                    duration.plusMinutes(value);
+                default ->
+                    throw new IllegalStateException(); // unreachable
+            };
+        }
+
+        restartDateTime = restartDateTime.plus(duration);
+
+        return restartDateTime.format(DateTimeFormatter.ofPattern("EEEE;HH:mm", Locale.ENGLISH));
     }
 }
