@@ -26,7 +26,7 @@ class CommandTest {
     }
 
     @Test
-    public void sarCommand() {
+    public void simpleautorestartCommand() {
         // Arrange
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "simpleautorestart.use", true);
@@ -34,6 +34,44 @@ class CommandTest {
 
         // Act
         CommandResult result = server.executePlayer("simpleautorestart");
+        String actualMessage = player.nextMessage();
+        if (actualMessage == null) {
+            actualMessage = "";
+        }
+
+        // Assert
+        assertEquals(false, result.hasSucceeded());
+        assertEquals(expectedMessage, actualMessage.trim(), "should return usage");
+    }
+
+    @Test
+    public void autorestartCommand() {
+        // Arrange
+        PlayerMock player = server.addPlayer();
+        player.addAttachment(plugin, "simpleautorestart.use", true);
+        String expectedMessage = "Usage: /simpleautorestart set <hour> <minute> [day]";
+
+        // Act
+        CommandResult result = server.executePlayer("autorestart");
+        String actualMessage = player.nextMessage();
+        if (actualMessage == null) {
+            actualMessage = "";
+        }
+
+        // Assert
+        assertEquals(false, result.hasSucceeded());
+        assertEquals(expectedMessage, actualMessage.trim(), "should return usage");
+    }
+
+    @Test
+    public void sarCommand() {
+        // Arrange
+        PlayerMock player = server.addPlayer();
+        player.addAttachment(plugin, "simpleautorestart.use", true);
+        String expectedMessage = "Usage: /simpleautorestart set <hour> <minute> [day]";
+
+        // Act
+        CommandResult result = server.executePlayer("sar");
         String actualMessage = player.nextMessage();
         if (actualMessage == null) {
             actualMessage = "";
