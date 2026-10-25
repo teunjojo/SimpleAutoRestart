@@ -26,6 +26,24 @@ class CommandTest {
     }
 
     @Test
+    public void sarCommandPermission() {
+        // Arrange
+        PlayerMock player = server.addPlayer();
+        String expectedMessage = "§cI'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.";
+
+        // Act
+        CommandResult result = server.executePlayer("sar");
+        String actualMessage = player.nextMessage();
+        if (actualMessage == null) {
+            actualMessage = "";
+        }
+
+        // Assert
+        assertEquals(true, result.hasSucceeded());
+        assertEquals(expectedMessage, actualMessage.trim(), "should return no permission error");
+    }
+
+    @Test
     public void simpleautorestartCommand() {
         // Arrange
         PlayerMock player = server.addPlayer();
@@ -81,4 +99,5 @@ class CommandTest {
         assertEquals(false, result.hasSucceeded());
         assertEquals(expectedMessage, actualMessage.trim(), "should return usage");
     }
+
 }
