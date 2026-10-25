@@ -13,11 +13,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.papermc.paper.ServerBuildInfo;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 
-public final class SimpleAutoRestart extends JavaPlugin {
+public class SimpleAutoRestart extends JavaPlugin {
 
     SimpleAutoRestart plugin = this;
 
@@ -42,8 +44,10 @@ public final class SimpleAutoRestart extends JavaPlugin {
     public void onEnable() {
 
         // bStats metrics
-        int pluginId = 17760;
-        Metrics metrics = new Metrics(this, pluginId);
+        if (!getServer().getName().equalsIgnoreCase("MockBukkit")) {
+            int pluginId = 17760;
+            Metrics metrics = new Metrics(this, pluginId);
+        }
 
         // Check for updates
         new UpdateChecker(this).getVersion((version) -> {
@@ -211,12 +215,7 @@ public final class SimpleAutoRestart extends JavaPlugin {
     }
 
     private static boolean isFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+        return ServerBuildInfo.buildInfo().isBrandCompatible(Key.key("papermc", "folia"));
     }
 
     private static boolean isPaper() {
